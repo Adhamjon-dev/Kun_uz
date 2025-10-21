@@ -43,15 +43,8 @@ public class RegionService {
         return dto;
     }
 
-    private void checkKey(RegionDTO dto) {
-        boolean exists = regionRepository.existsByRegionKey(dto.getRegionKey().toLowerCase());
-        if (exists) {
-            throw new AppBadException("Region key exists: " + dto.getRegionKey());
-        }
-    }
-
     public Boolean update(RegionDTO dto, Integer id) {
-        Optional<RegionEntity> optional = regionRepository.findById(id);
+        Optional<RegionEntity> optional = regionRepository.findByIdAndVisibleTrue(id);
         if (optional.isEmpty()) {
             throw new AppBadException("Region not found: " + id);
         }

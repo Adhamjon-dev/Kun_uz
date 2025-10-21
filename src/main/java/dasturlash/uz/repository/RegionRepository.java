@@ -24,4 +24,6 @@ public interface RegionRepository extends CrudRepository<RegionEntity, Integer> 
     List<LanguageMapper> getRuLanguage();
 
     boolean existsByRegionKeyAndIdNot(String key, Integer id);
+
+    Optional<RegionEntity> findByIdAndVisibleTrue(Integer id);
 }

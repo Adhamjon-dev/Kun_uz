@@ -1,0 +1,32 @@
+### Create category
+POST localhost:8080/api/v1/category
+Content-Type: application/json
+
+{
+  "orderNumber": 2,
+  "nameUz": "Jahon1",
+  "nameRu": "Jahon_ru1",
+  "nameEn": "Jahon_en1",
+  "categoryKey": "Jahon1"
+}
+
+### Get all category
+GET localhost:8080/api/v1/category
+
+### Update category
+PUT localhost:8080/api/v1/category/1
+Content-Type: application/json
+
+{
+  "orderNumber": 1,
+  "nameUz": "T 1",
+  "nameRu": "Ташкент 1",
+  "nameEn": "Tashkent 1",
+  "categoryKey": "tashkent1"
+}
+
+### Delete category
+DELETE localhost:8080/api/v1/category/1
+
+### Get by lang
+GET localhost:8080/api/v1/category/lang?language=UZ
