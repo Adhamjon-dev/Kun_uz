@@ -6,11 +6,12 @@ import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @Entity
-@Table(name = "category")
-public class CategoryEntity {
+@Table(name = "section")
+public class SectionEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer id;
@@ -27,8 +28,8 @@ public class CategoryEntity {
     @Column(name = "name_en")
     private String nameEn;
 
-    @Column(name = "category_key",  unique = true)
-    private String categoryKey;
+    @Column(name = "section_key",  unique = true)
+    private String sectionKey;
 
     @Column(name = "visible")
     private Boolean visible = true;
@@ -36,4 +37,10 @@ public class CategoryEntity {
     @Column(name = "created_date")
     @CreationTimestamp
     private LocalDateTime createdDate;
+
+    @Column(name = "image_id")
+    private Integer imageId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "image_id", insertable = false, updatable = false)
+    private ImageEntity image;
 }
