@@ -2,8 +2,11 @@ package dasturlash.uz.repository;
 
 import dasturlash.uz.entitiy.CategoryEntity;
 import dasturlash.uz.mapper.LanguageMapper;
+import jakarta.transaction.Transactional;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -16,14 +19,25 @@ public interface CategoryRepository extends CrudRepository<CategoryEntity, Integ
 
     Boolean existsByCategoryKeyAndIdNot(String regionKey, Integer id);
 
-    @Query("select c.id as id, c.categoryKey as key, c.nameEn as name from CategoryEntity c where c.visible = true")
-    List<LanguageMapper> getEnLanguage();
+    @Transactional
+    @Modifying
+    @Query("update CategoryEntity set visible = false where id = ?1")
+    int updateVisibleById(Integer id);
 
-    @Query("select c.id as id, c.categoryKey as key, c.nameUz as name from CategoryEntity c where c.visible = true")
-    List<LanguageMapper> getUzLanguage();
-
-    @Query("select c.id as id, c.categoryKey as key, c.nameRu as name from CategoryEntity c where c.visible = true")
-    List<LanguageMapper> getRuLanguage();
+    @Query("SELECT c.id AS id, " +
+            "CASE :lang " +
+            "   WHEN 'UZ' THEN c.nameUz " +
+            "   WHEN 'RU' THEN c.nameRu " +
+            "   WHEN 'EN' THEN c.nameEn " +
+            "END AS name, " +
+            "c.orderNumber AS orderNumber, " +
+            "c.categoryKey AS key " +
+            "FROM CategoryEntity c " +
+            "WHERE c.visible = true order by orderNumber asc")
+    List<LanguageMapper> getByLang(@Param("lang") String lang);
 
     Optional<CategoryEntity> findByIdAndVisibleTrue(Integer id);
+
+    @Query("from CategoryEntity order by orderNumber")
+    Iterable<CategoryEntity> findAllOrder();
 }

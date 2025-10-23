@@ -2,7 +2,7 @@ package dasturlash.uz.service;
 
 import dasturlash.uz.dto.SectionDTO;
 import dasturlash.uz.entitiy.SectionEntity;
-import dasturlash.uz.enums.Language;
+import dasturlash.uz.enums.AppLanguageEnum;
 import dasturlash.uz.exp.AppBadException;
 import dasturlash.uz.mapper.LanguageMapper;
 import dasturlash.uz.repository.SectionRepository;
@@ -13,9 +13,6 @@ import org.springframework.stereotype.Service;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
-
-import static dasturlash.uz.enums.Language.EN;
-import static dasturlash.uz.enums.Language.RU;
 
 @Service
 public class SectionService {
@@ -66,18 +63,15 @@ public class SectionService {
         return true;
     }
 
-    public void delete(Integer id) {
-        Optional<SectionEntity> optional = sectionRepository.findById(id);
-        if (optional.isPresent()) {
-            SectionEntity entity = optional.get();
-            entity.setVisible(false);
-            sectionRepository.save(entity);
-        }
+    public Boolean delete(Integer id) {
+        return sectionRepository.updateVisibleById(id) == 1;
     }
 
     public List<SectionDTO> getAll() {
-        Iterable<SectionEntity> entityList = sectionRepository.findAll();
-        return changeToDtoList(entityList);
+        Iterable<SectionEntity> iterable = sectionRepository.findAllOrder();
+        List<SectionDTO> dtoList = new LinkedList<>();
+        iterable.forEach(entity -> dtoList.add(toDto(entity)));
+        return dtoList;
     }
 
     public PageImpl<SectionDTO> getAllPagination(int page, int size) {
@@ -87,39 +81,32 @@ public class SectionService {
         List<SectionEntity> list = pageResult.getContent();
         long totalCount = pageResult.getTotalElements();
 
-        List<SectionDTO> dtoList = changeToDtoList(list);
+        List<SectionDTO> dtoList = new LinkedList<>();
+        list.forEach(entity -> dtoList.add(toDto(entity)));
         return new PageImpl<>(dtoList, pageable, totalCount);
     }
 
-    private List<SectionDTO> changeToDtoList(Iterable<SectionEntity> entityList) {
-        List<SectionDTO> dtoList = new LinkedList<>();
-        for (SectionEntity entity : entityList) {
-            SectionDTO dto = new SectionDTO();
-            dto.setId(entity.getId());
-            dto.setOrderNumber(entity.getOrderNumber());
-            dto.setNameUz(entity.getNameUz());
-            dto.setNameRu(entity.getNameRu());
-            dto.setNameEn(entity.getNameEn());
-            dto.setSectionKey(entity.getSectionKey().toLowerCase());
-            dto.setVisible(entity.getVisible());
-            dto.setCreatedDate(entity.getCreatedDate());
-            dto.setImageId(entity.getImageId());
-            dtoList.add(dto);
-        }
-        return dtoList;
+    private SectionDTO toDto(SectionEntity entity) {
+        SectionDTO dto = new SectionDTO();
+        dto.setId(entity.getId());
+        dto.setOrderNumber(entity.getOrderNumber());
+        dto.setNameUz(entity.getNameUz());
+        dto.setNameRu(entity.getNameRu());
+        dto.setNameEn(entity.getNameEn());
+        dto.setSectionKey(entity.getSectionKey().toLowerCase());
+        dto.setVisible(entity.getVisible());
+        dto.setCreatedDate(entity.getCreatedDate());
+        dto.setImageId(entity.getImageId());
+        return dto;
     }
 
-    public List<LanguageMapper> getByLanguage(String language) {
-        try {
-            if (Language.valueOf(language).equals(EN)) {
-                return sectionRepository.getEnLanguage();
-            }
-            if (Language.valueOf(language).equals(RU)) {
-                return sectionRepository.getRuLanguage();
-            }
-            return sectionRepository.getUzLanguage();
-        } catch (IllegalArgumentException e) {
-            throw new AppBadException("Language not found: " + language);
-        }
+    public List<LanguageMapper> getAllByLang(AppLanguageEnum lang) {
+        return sectionRepository.getByLang(lang.name());
+    }
+
+    public SectionEntity get(Integer id) {
+        return sectionRepository.findById(id).orElseThrow(() -> {
+            throw new AppBadException("Item not found");
+        });
     }
 }

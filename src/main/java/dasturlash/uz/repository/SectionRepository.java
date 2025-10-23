@@ -1,10 +1,14 @@
 package dasturlash.uz.repository;
 
+import dasturlash.uz.entitiy.CategoryEntity;
 import dasturlash.uz.entitiy.SectionEntity;
 import dasturlash.uz.mapper.LanguageMapper;
+import jakarta.transaction.Transactional;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -18,12 +22,23 @@ public interface SectionRepository extends CrudRepository<SectionEntity, Integer
 
     Boolean existsBySectionKeyAndIdNot(String sectionKey,Integer id);
 
-    @Query("select s.id as id, s.sectionKey as key, s.nameEn as name from SectionEntity s where s.visible = true")
-    List<LanguageMapper> getEnLanguage();
+    @Transactional
+    @Modifying
+    @Query("update SectionEntity set visible = false where id = ?1")
+    int updateVisibleById(Integer id);
 
-    @Query("select s.id as id, s.sectionKey as key, s.nameUz as name from SectionEntity s where s.visible = true")
-    List<LanguageMapper> getUzLanguage();
+    @Query("SELECT s.id AS id, " +
+            "CASE :lang " +
+            "   WHEN 'UZ' THEN s.nameUz " +
+            "   WHEN 'RU' THEN s.nameRu " +
+            "   WHEN 'EN' THEN s.nameEn " +
+            "END AS name, " +
+            "s.orderNumber AS orderNumber, " +
+            "s.sectionKey AS key " +
+            "FROM SectionEntity s " +
+            "WHERE s.visible = true order by orderNumber asc")
+    List<LanguageMapper> getByLang(@Param("lang") String lang);
 
-    @Query("select s.id as id, s.sectionKey as key, s.nameRu as name from SectionEntity s where s.visible = true")
-    List<LanguageMapper> getRuLanguage();
+    @Query("from SectionEntity order by orderNumber")
+    Iterable<SectionEntity> findAllOrder();
 }

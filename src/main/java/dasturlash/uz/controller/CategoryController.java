@@ -1,6 +1,7 @@
 package dasturlash.uz.controller;
 
 import dasturlash.uz.dto.CategoryDTO;
+import dasturlash.uz.enums.AppLanguageEnum;
 import dasturlash.uz.mapper.LanguageMapper;
 import dasturlash.uz.service.CategoryService;
 import jakarta.validation.Valid;
@@ -38,7 +39,7 @@ public class CategoryController {
     }
 
     @GetMapping("/lang")
-    public ResponseEntity<List<LanguageMapper>> getByLanguages(@RequestParam("language") String language) {
-        return ResponseEntity.ok(categoryService.getByLanguage(language));
+    public ResponseEntity<List<LanguageMapper>> getByLang(@RequestHeader(name = "Accept-Language", defaultValue = "uz") AppLanguageEnum language) {
+        return ResponseEntity.ok(categoryService.getAllByLang(language));
     }
 }

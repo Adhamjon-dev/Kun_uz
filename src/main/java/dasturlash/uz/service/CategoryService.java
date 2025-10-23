@@ -2,7 +2,7 @@ package dasturlash.uz.service;
 
 import dasturlash.uz.dto.CategoryDTO;
 import dasturlash.uz.entitiy.CategoryEntity;
-import dasturlash.uz.enums.Language;
+import dasturlash.uz.enums.AppLanguageEnum;
 import dasturlash.uz.exp.AppBadException;
 import dasturlash.uz.mapper.LanguageMapper;
 import dasturlash.uz.repository.CategoryRepository;
@@ -12,9 +12,6 @@ import org.springframework.stereotype.Service;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
-
-import static dasturlash.uz.enums.Language.EN;
-import static dasturlash.uz.enums.Language.RU;
 
 @Service
 public class CategoryService {
@@ -63,48 +60,37 @@ public class CategoryService {
         return true;
     }
 
-    public void delete(Integer id) {
-        Optional<CategoryEntity> optional = categoryRepository.findById(id);
-        if (optional.isPresent()) {
-            CategoryEntity entity = optional.get();
-            entity.setVisible(false);
-            categoryRepository.save(entity);
-        }
+    public Boolean delete(Integer id) {
+        return categoryRepository.updateVisibleById(id) == 1;
     }
 
     public List<CategoryDTO> getAll() {
-        Iterable<CategoryEntity> entityList = categoryRepository.findAll();
-        return changeToDtoList(entityList);
-    }
-
-    private List<CategoryDTO> changeToDtoList(Iterable<CategoryEntity> entityList) {
+        Iterable<CategoryEntity> iterable = categoryRepository.findAllOrder();
         List<CategoryDTO> dtoList = new LinkedList<>();
-        for (CategoryEntity entity : entityList) {
-            CategoryDTO dto = new CategoryDTO();
-            dto.setId(entity.getId());
-            dto.setOrderNumber(entity.getOrderNumber());
-            dto.setNameUz(entity.getNameUz());
-            dto.setNameRu(entity.getNameRu());
-            dto.setNameEn(entity.getNameEn());
-            dto.setCategoryKey(entity.getCategoryKey().toLowerCase());
-            dto.setVisible(entity.getVisible());
-            dto.setCreatedDate(entity.getCreatedDate());
-            dtoList.add(dto);
-        }
+        iterable.forEach(entity -> dtoList.add(toDto(entity)));
         return dtoList;
     }
 
-    public List<LanguageMapper> getByLanguage(String language) {
-        try {
-            if (Language.valueOf(language).equals(EN)) {
-                return categoryRepository.getEnLanguage();
-            }
-            if (Language.valueOf(language).equals(RU)) {
-                return categoryRepository.getRuLanguage();
-            }
-            return categoryRepository.getUzLanguage();
-        } catch (IllegalArgumentException e) {
-            throw new AppBadException("Language not found: " + language);
-        }
+    private CategoryDTO toDto(CategoryEntity entity) {
+        CategoryDTO dto = new CategoryDTO();
+        dto.setId(entity.getId());
+        dto.setOrderNumber(entity.getOrderNumber());
+        dto.setNameUz(entity.getNameUz());
+        dto.setNameRu(entity.getNameRu());
+        dto.setNameEn(entity.getNameEn());
+        dto.setCategoryKey(entity.getCategoryKey().toLowerCase());
+        dto.setVisible(entity.getVisible());
+        dto.setCreatedDate(entity.getCreatedDate());
+        return dto;
+    }
+
+    public List<LanguageMapper> getAllByLang(AppLanguageEnum lang) {
+        return categoryRepository.getByLang(lang.name());
+    }
+
+    public CategoryEntity get(Integer id) {
+        return categoryRepository.findById(id).orElseThrow(() -> {
+            throw new AppBadException("Item not found");
+        });
     }
 }
