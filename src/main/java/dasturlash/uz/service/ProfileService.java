@@ -1,14 +1,22 @@
 package dasturlash.uz.service;
 
+import dasturlash.uz.dto.CustomFilterResultDTO;
 import dasturlash.uz.dto.ProfileDTO;
+import dasturlash.uz.dto.ProfileFilterDTO;
+import dasturlash.uz.dto.update_dto.UpdateProfileAdmin;
+import dasturlash.uz.dto.update_dto.UpdateProfileOwn;
 import dasturlash.uz.entitiy.ProfileEntity;
 import dasturlash.uz.enums.ProfileStatus;
 import dasturlash.uz.exp.AppBadException;
+import dasturlash.uz.repository.CustomProfileRepository;
 import dasturlash.uz.repository.ProfileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -19,6 +27,8 @@ public class ProfileService {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
     @Autowired
     private ProfileRoleService profileRoleService;
+    @Autowired
+    private CustomProfileRepository  customProfileRepository;
 
     public ProfileDTO create(ProfileDTO profile) {
         // checking
@@ -41,4 +51,72 @@ public class ProfileService {
         profile.setCreatedDate(entity.getCreatedDate());
         return profile;
     }
+
+    public Boolean updateAdmin(Integer profileId, UpdateProfileAdmin newProfile) {
+        Optional<ProfileEntity> optional = profileRepository.findByIdAndVisibleTrue(profileId);
+        if (optional.isEmpty()) {
+            throw new AppBadException("User not found");
+        }
+        ProfileEntity entity = optional.get();
+        entity.setStatus(newProfile.getStatus());
+        profileRoleService.update(profileId, newProfile.getRoleList());
+        return Boolean.TRUE;
+    }
+
+    public Boolean updateOwn(Integer profileId, UpdateProfileOwn newProfile) {
+        Optional<ProfileEntity> optional = profileRepository.findByIdAndVisibleTrue(profileId);
+        if (optional.isEmpty()) {
+            throw new AppBadException("User not found");
+        }
+        Optional<ProfileEntity> opt = profileRepository.findByUsernameAndVisibleTrueAndIdNot(newProfile.getUsername(), profileId);
+        if (opt.isPresent()) {
+            throw new AppBadException("Username exists");
+        }
+        ProfileEntity entity = optional.get();
+        entity.setName(newProfile.getName());
+        entity.setSurname(newProfile.getSurname());
+        entity.setPassword(bCryptPasswordEncoder.encode(newProfile.getPassword()));
+        entity.setUsername(newProfile.getUsername());
+        return Boolean.TRUE;
+    }
+
+    public PageImpl<ProfileDTO> pagination(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size,  Sort.by("createdDate").descending());
+        Page<ProfileEntity> pageResult = profileRepository.findAll(pageable);
+
+        List<ProfileEntity> entityList = pageResult.getContent();
+        long totalCount = pageResult.getTotalElements();
+
+        List<ProfileDTO> dtoList = new LinkedList<>();
+        entityList.forEach(entity -> dtoList.add(toDto(entity)));
+        return new PageImpl<>(dtoList, pageable, totalCount);
+    }
+
+    private ProfileDTO toDto(ProfileEntity entity) {
+        ProfileDTO dto = new ProfileDTO();
+        dto.setId(entity.getId());
+        dto.setName(entity.getName());
+        dto.setSurname(entity.getSurname());
+        dto.setPassword(entity.getPassword());
+        dto.setUsername(entity.getUsername());
+        dto.setStatus(entity.getStatus());
+        dto.setVisible(entity.getVisible());
+        return dto;
+    }
+
+    public Boolean delete(Integer id) {
+        return profileRepository.updateVisibleById(id) == 1;
+    }
+
+    public PageImpl<ProfileDTO> filter(ProfileFilterDTO filter, int page, int size) {
+        CustomFilterResultDTO<ProfileEntity> result = customProfileRepository.filter(filter, page, size);
+        List<ProfileEntity> entityList = result.getContent();
+        long totalCount = result.getTotalCount();
+
+        List<ProfileDTO> dtoList = new LinkedList<>();
+        entityList.forEach(entity -> dtoList.add(toDto(entity)));
+        return new PageImpl<>(dtoList, PageRequest.of(page, size), totalCount);
+    }
+
+
 }

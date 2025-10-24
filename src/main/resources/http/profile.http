@@ -1,0 +1,52 @@
+### Create
+POST localhost:8080/api/v1/profile
+Content-Type: application/json
+
+{
+  "name": "Eshmat3",
+  "surname": "Eshmatov3",
+  "username": "eshmat3@gmail.com",
+  "password": "12345",
+  "roleList": [
+    "ROLE_USER"
+  ]
+}
+
+### update Admin
+PUT localhost:8080/api/v1/profile/admin/1
+Content-Type: application/json
+
+{
+  "roleList": [
+    "ROLE_MODERATOR",
+    "ROLE_PUBLISH"
+  ],
+  "status": "ACTIVE"
+}
+
+### update Own
+PUT localhost:8080/api/v1/profile/own/1
+Content-Type: application/json
+
+{
+  "name": "Eshmat30",
+  "surname": "Eshmatov30",
+  "username": "eshmat3@gmail.com",
+  "password": "12345"
+}
+
+### delete
+DELETE localhost:8080/api/v1/profile/1
+
+### Get all Pagination
+GET localhost:8080/api/v1/profile/pagination?size=10
+
+### Filter
+POST localhost:8080/api/v1/profile/filter?size=10
+Content-Type: application/json
+
+{
+  "createdDateFrom": "2025-10-20",
+  "createdDateTo": "2025-10-25",
+  "role": "ROLE_MODERATOR"
+}

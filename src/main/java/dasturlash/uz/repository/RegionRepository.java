@@ -1,6 +1,5 @@
 package dasturlash.uz.repository;
 
-import dasturlash.uz.entitiy.CategoryEntity;
 import dasturlash.uz.entitiy.RegionEntity;
 import dasturlash.uz.mapper.LanguageMapper;
 import jakarta.transaction.Transactional;
