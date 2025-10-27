@@ -1,11 +1,9 @@
 package dasturlash.uz.service;
 
 import dasturlash.uz.dto.CustomFilterResultDTO;
-import dasturlash.uz.dto.ProfileDTO;
-import dasturlash.uz.dto.ProfileFilterDTO;
-import dasturlash.uz.dto.update_dto.UpdateProfileAdmin;
-import dasturlash.uz.dto.update_dto.UpdateProfileOwn;
+import dasturlash.uz.dto.profile.*;
 import dasturlash.uz.entitiy.ProfileEntity;
+import dasturlash.uz.entitiy.SectionEntity;
 import dasturlash.uz.enums.ProfileStatus;
 import dasturlash.uz.exp.AppBadException;
 import dasturlash.uz.repository.CustomProfileRepository;
@@ -75,9 +73,21 @@ public class ProfileService {
         ProfileEntity entity = optional.get();
         entity.setName(newProfile.getName());
         entity.setSurname(newProfile.getSurname());
-        entity.setPassword(bCryptPasswordEncoder.encode(newProfile.getPassword()));
         entity.setUsername(newProfile.getUsername());
         return Boolean.TRUE;
+    }
+
+    public Boolean updatePassword(Integer profileId, ProfileUpdatePasswordDTO dto) {
+        Optional<ProfileEntity> optional = profileRepository.findByIdAndVisibleTrue(profileId);
+        if (optional.isEmpty()) {
+            throw new AppBadException("User not found");
+        }
+        ProfileEntity entity = optional.get();
+        if (bCryptPasswordEncoder.encode(dto.getCurrentPassword()).equals(entity.getPassword())) {
+            entity.setPassword(bCryptPasswordEncoder.encode(dto.getNewPassword()));
+            return Boolean.TRUE;
+        }
+        throw new AppBadException("Current password does not match");
     }
 
     public PageImpl<ProfileDTO> pagination(int page, int size) {
@@ -118,5 +128,16 @@ public class ProfileService {
         return new PageImpl<>(dtoList, PageRequest.of(page, size), totalCount);
     }
 
+    public ProfileDTO get(Integer id) {
+        Optional<ProfileEntity> optional =  profileRepository.findByIdAndVisibleTrue(id);
+        if (optional.isEmpty()) {
+            throw new AppBadException("Item not found");
+        }
+        ProfileEntity entity = optional.get();
+        return toDto(entity);
+    }
 
+    public void setStatusByUsername(ProfileStatus status, String username) {
+        profileRepository.setStatusByUsername(status, username);
+    }
 }

@@ -105,7 +105,7 @@ public class SectionService {
     }
 
     public SectionEntity get(Integer id) {
-        return sectionRepository.findById(id).orElseThrow(() -> {
+        return sectionRepository.findByIdAndVisibleTrue(id).orElseThrow(() -> {
             throw new AppBadException("Item not found");
         });
     }

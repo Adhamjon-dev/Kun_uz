@@ -1,4 +1,4 @@
-package dasturlash.uz.dto.update_dto;
+package dasturlash.uz.dto.profile;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
@@ -15,7 +15,4 @@ public class UpdateProfileOwn {
 
     @NotBlank(message = "Username  bo‘sh bo‘lmasligi kerak")
     private String username;
-
-    @NotBlank(message = "Parol bo‘sh bo‘lmasligi kerak")
-    private String password;
 }

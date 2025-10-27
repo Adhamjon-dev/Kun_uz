@@ -39,4 +39,8 @@ public class ProfileRoleService {
         }
         create(profileId, roleList);
     }
+
+    public void deleteRolesByProfileId(Integer profileId) {
+        profileRoleRepository.deleteByProfileId(profileId);
+    }
 }

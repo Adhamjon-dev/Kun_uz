@@ -50,3 +50,15 @@ Content-Type: application/json
   "createdDateTo": "2025-10-25",
   "role": "ROLE_MODERATOR"
 }
+
+### Update password
+PUT localhost:8080/api/v1/profile/password/1
+Content-Type: application/json
+
+{
+  "currentPassword": "12345",
+  "newPassword": "11111"
+}
+
+### Get By Id
+GET localhost:8080/api/v1/profile/get/1

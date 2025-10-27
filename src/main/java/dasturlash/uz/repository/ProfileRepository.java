@@ -1,6 +1,7 @@
 package dasturlash.uz.repository;
 
 import dasturlash.uz.entitiy.ProfileEntity;
+import dasturlash.uz.enums.ProfileStatus;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -22,4 +23,10 @@ public interface ProfileRepository extends CrudRepository<ProfileEntity, Integer
     @Modifying
     @Query("update ProfileEntity set visible = false where id = ?1")
     int updateVisibleById(Integer id);
+
+    @Transactional
+    @Modifying
+    @Query("update ProfileEntity set status =?1 where username =?2")
+    void setStatusByUsername(ProfileStatus status, String username);
+
 }

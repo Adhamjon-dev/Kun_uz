@@ -1,7 +1,7 @@
 package dasturlash.uz.repository;
 
 import dasturlash.uz.dto.CustomFilterResultDTO;
-import dasturlash.uz.dto.ProfileFilterDTO;
+import dasturlash.uz.dto.profile.ProfileFilterDTO;
 import dasturlash.uz.entitiy.ProfileEntity;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
