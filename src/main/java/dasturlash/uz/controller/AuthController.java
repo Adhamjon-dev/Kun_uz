@@ -1,5 +1,6 @@
 package dasturlash.uz.controller;
 
+import dasturlash.uz.dto.SmsHistoryDTO;
 import dasturlash.uz.dto.VerificationBySmsDTO;
 import dasturlash.uz.dto.profile.RegistrationDTO;
 import dasturlash.uz.service.AuthService;
@@ -23,5 +24,4 @@ public class AuthController {
     public ResponseEntity<String> verificationBySms(@RequestBody VerificationBySmsDTO dto) {
         return ResponseEntity.ok(authService.verificationBySms(dto));
     }
-
 }
