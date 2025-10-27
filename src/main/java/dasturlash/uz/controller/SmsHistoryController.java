@@ -19,19 +19,19 @@ public class SmsHistoryController {
     @Autowired
     private SmsHistoryService smsHistoryService;
 
-    @GetMapping("/phohe")
-    public ResponseEntity<List<SmsHistoryDTO>> getByPhone(String  phone) {
+    @GetMapping("/phone")
+    public ResponseEntity<List<SmsHistoryDTO>> getByPhone(@RequestParam("phone") String  phone) {
         return ResponseEntity.ok(smsHistoryService.getSmsDtoByPhone(phone));
     }
 
     @GetMapping("/date")
-    public ResponseEntity<List<SmsHistoryDTO>> getByDate(LocalDate date) {
+    public ResponseEntity<List<SmsHistoryDTO>> getByDate(@RequestParam("date") LocalDate date) {
         return ResponseEntity.ok(smsHistoryService.getSmsDtoByDate(date));
     }
 
     @GetMapping("/pagination")
-    public ResponseEntity<PageImpl<SmsHistoryDTO>> pagination(@RequestParam(value = "size", defaultValue = "1") int size,
-                                                              @RequestParam(value = "page", defaultValue = "5") int page) {
+    public ResponseEntity<PageImpl<SmsHistoryDTO>> pagination(@RequestParam(value = "page", defaultValue = "1") int page,
+                                                              @RequestParam(value = "size", defaultValue = "5") int size) {
         return ResponseEntity.ok(smsHistoryService.pagination(page, size));
     }
 }
