@@ -21,12 +21,12 @@ public class ProfileController {
     }
 
     @PutMapping("/admin/{id}")
-    public ResponseEntity<Boolean> updateAdmin(@PathVariable Integer id, @Valid @RequestBody UpdateProfileAdmin dto) {
+    public ResponseEntity<Boolean> updateAdmin(@PathVariable Integer id, @Valid @RequestBody UpdateProfileAdminDTO dto) {
         return ResponseEntity.ok(profileService.updateAdmin(id, dto));
     }
 
     @PutMapping("/own/{id}")
-    public ResponseEntity<Boolean> updateOwn(@PathVariable Integer id, @Valid @RequestBody UpdateProfileOwn dto) {
+    public ResponseEntity<Boolean> updateOwn(@PathVariable Integer id, @Valid @RequestBody UpdateProfileOwnDTO dto) {
         return ResponseEntity.ok(profileService.updateOwn(id, dto));
     }
 

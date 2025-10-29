@@ -1,8 +1,9 @@
 package dasturlash.uz.controller;
 
-import dasturlash.uz.dto.SmsHistoryDTO;
-import dasturlash.uz.dto.VerificationBySmsDTO;
-import dasturlash.uz.dto.profile.RegistrationDTO;
+import dasturlash.uz.dto.auth.AuthorizationDTO;
+import dasturlash.uz.dto.auth.VerificationBySmsDTO;
+import dasturlash.uz.dto.auth.RegistrationDTO;
+import dasturlash.uz.dto.profile.ProfileDTO;
 import dasturlash.uz.service.AuthService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,5 +24,10 @@ public class AuthController {
     @PutMapping("/registration/sms/verification")
     public ResponseEntity<String> verificationBySms(@RequestBody VerificationBySmsDTO dto) {
         return ResponseEntity.ok(authService.verificationBySms(dto));
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<ProfileDTO> login(@Valid @RequestBody AuthorizationDTO dto) {
+        return ResponseEntity.ok(authService.login(dto));
     }
 }

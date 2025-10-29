@@ -43,4 +43,8 @@ public class ProfileRoleService {
     public void deleteRolesByProfileId(Integer profileId) {
         profileRoleRepository.deleteByProfileId(profileId);
     }
+
+    public List<ProfileRoleEnum> getByProfileId(Integer profileId) {
+        return profileRoleRepository.getRoleListByProfileId(profileId);
+    }
 }

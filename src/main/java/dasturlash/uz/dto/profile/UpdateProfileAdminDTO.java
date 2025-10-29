@@ -11,7 +11,7 @@ import java.util.List;
 
 @Getter
 @Setter
-public class UpdateProfileAdmin {
+public class UpdateProfileAdminDTO {
     @NotEmpty(message = "Role bo‘sh bo‘lmasligi kerak")
     private List<ProfileRoleEnum> roleList;
 

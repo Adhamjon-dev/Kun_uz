@@ -1,7 +1,9 @@
 package dasturlash.uz.service;
 
-import dasturlash.uz.dto.VerificationBySmsDTO;
-import dasturlash.uz.dto.profile.RegistrationDTO;
+import dasturlash.uz.dto.auth.AuthorizationDTO;
+import dasturlash.uz.dto.auth.VerificationBySmsDTO;
+import dasturlash.uz.dto.auth.RegistrationDTO;
+import dasturlash.uz.dto.profile.ProfileDTO;
 import dasturlash.uz.entitiy.ProfileEntity;
 import dasturlash.uz.enums.ProfileRoleEnum;
 import dasturlash.uz.enums.ProfileStatus;
@@ -65,6 +67,27 @@ public class AuthService {
             return "Verification Success!";
         }
         throw new AppBadException("Wrong sms code");
+    }
+
+    public ProfileDTO login(AuthorizationDTO dto) {
+        Optional<ProfileEntity> profileOptional = profileRepository.findByUsernameAndVisibleTrue(dto.getUsername());
+        if (profileOptional.isEmpty()) {
+            throw new AppBadException("Username or password wrong");
+        }
+        ProfileEntity entity = profileOptional.get();
+        if (!bCryptPasswordEncoder.matches(dto.getPassword(), entity.getPassword())) {
+            throw new AppBadException("Username or password wrong");
+        }
+        if (!entity.getStatus().equals(ProfileStatus.ACTIVE)) {
+            throw new AppBadException("User in wrong status");
+        }
+        ProfileDTO response = new ProfileDTO();
+        response.setId(entity.getId());
+        response.setName(entity.getName());
+        response.setSurname(entity.getSurname());
+        response.setUsername(entity.getUsername());
+        response.setRoleList(profileRoleService.getByProfileId(entity.getId()));
+        return response;
     }
 
 }

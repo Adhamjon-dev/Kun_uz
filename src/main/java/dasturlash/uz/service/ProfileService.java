@@ -3,7 +3,6 @@ package dasturlash.uz.service;
 import dasturlash.uz.dto.CustomFilterResultDTO;
 import dasturlash.uz.dto.profile.*;
 import dasturlash.uz.entitiy.ProfileEntity;
-import dasturlash.uz.entitiy.SectionEntity;
 import dasturlash.uz.enums.ProfileStatus;
 import dasturlash.uz.exp.AppBadException;
 import dasturlash.uz.repository.CustomProfileRepository;
@@ -50,7 +49,7 @@ public class ProfileService {
         return profile;
     }
 
-    public Boolean updateAdmin(Integer profileId, UpdateProfileAdmin newProfile) {
+    public Boolean updateAdmin(Integer profileId, UpdateProfileAdminDTO newProfile) {
         Optional<ProfileEntity> optional = profileRepository.findByIdAndVisibleTrue(profileId);
         if (optional.isEmpty()) {
             throw new AppBadException("User not found");
@@ -61,7 +60,7 @@ public class ProfileService {
         return Boolean.TRUE;
     }
 
-    public Boolean updateOwn(Integer profileId, UpdateProfileOwn newProfile) {
+    public Boolean updateOwn(Integer profileId, UpdateProfileOwnDTO newProfile) {
         Optional<ProfileEntity> optional = profileRepository.findByIdAndVisibleTrue(profileId);
         if (optional.isEmpty()) {
             throw new AppBadException("User not found");
@@ -83,7 +82,7 @@ public class ProfileService {
             throw new AppBadException("User not found");
         }
         ProfileEntity entity = optional.get();
-        if (bCryptPasswordEncoder.encode(dto.getCurrentPassword()).equals(entity.getPassword())) {
+        if (bCryptPasswordEncoder.matches(entity.getPassword(), dto.getCurrentPassword())) {
             entity.setPassword(bCryptPasswordEncoder.encode(dto.getNewPassword()));
             return Boolean.TRUE;
         }

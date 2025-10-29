@@ -6,7 +6,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class UpdateProfileOwn {
+public class UpdateProfileOwnDTO {
     @NotBlank(message = "Ism bo‘sh bo‘lmasligi kerak")
     private String name;
 

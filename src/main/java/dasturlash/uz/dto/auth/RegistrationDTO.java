@@ -1,4 +1,4 @@
-package dasturlash.uz.dto.profile;
+package dasturlash.uz.dto.auth;
 
 
 import jakarta.validation.constraints.NotBlank;
