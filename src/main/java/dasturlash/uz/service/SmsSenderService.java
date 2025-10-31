@@ -14,8 +14,6 @@ import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.HttpServerErrorException;
-import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.Duration;
@@ -47,7 +45,7 @@ public class SmsSenderService {
         System.out.println(body);
         smsHistoryService.save(phone, body, String.valueOf(smsCode));
         // ...
-        new Thread(() -> send(phone, body)).start();
+        send(phone, body);
     }
 
 

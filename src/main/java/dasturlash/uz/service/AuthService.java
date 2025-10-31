@@ -9,6 +9,7 @@ import dasturlash.uz.enums.ProfileRoleEnum;
 import dasturlash.uz.enums.ProfileStatus;
 import dasturlash.uz.exp.AppBadException;
 import dasturlash.uz.repository.ProfileRepository;
+import dasturlash.uz.util.ValidatorUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -30,6 +31,8 @@ public class AuthService {
     private ProfileService profileService;
     @Autowired
     private SmsHistoryService smsHistoryService;
+    @Autowired
+    private EmailSendingService  emailSendingService;
 
     public String registration(RegistrationDTO dto) { //
         // name = Toshmat, username = mazgi
@@ -56,14 +59,21 @@ public class AuthService {
         // save roles
         profileRoleService.create(profile.getId(), List.of(ProfileRoleEnum.ROLE_USER));
         // send verification code
-        smsSenderService.sendRegistrationSMS(profile.getUsername());
+        if (ValidatorUtil.isPhoneNumber(dto.getUsername())) {
+            // send verification code
+            new Thread(() -> {
+                smsSenderService.sendRegistrationSMS(profile.getUsername());
+            }).start();
+        }else { // email
+            new Thread(() -> emailSendingService.sendRegistrationEmailLink(profile.getUsername(), dto.getName())).start();
+        }
 
         return "Sms code jo'natildi mazgi.";
     }
 
     public String verificationBySms(VerificationBySmsDTO dto) {
-        if (smsHistoryService.isSmsSendToPhone(dto.getPhoneNumber(), dto.getCode())) {
-            profileService.setStatusByUsername(ProfileStatus.ACTIVE, dto.getPhoneNumber());
+        if (smsHistoryService.isSmsSendToPhone(dto.getUserName(), dto.getCode())) {
+            profileService.setStatusByUsername(ProfileStatus.ACTIVE, dto.getUserName());
             return "Verification Success!";
         }
         throw new AppBadException("Wrong sms code");
@@ -90,4 +100,12 @@ public class AuthService {
         return response;
     }
 
+    public String verificationByLink(String id) {
+        Optional<ProfileEntity> optional = profileService.getProfileById(Integer.parseInt(id));
+        if (optional.isPresent()) {
+            profileService.setStatusByUsername(ProfileStatus.ACTIVE, optional.get().getUsername());
+            return "Verification Success!";
+        }
+        throw new AppBadException("Wrong sms code");
+    }
 }

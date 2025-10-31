@@ -30,4 +30,9 @@ public class AuthController {
     public ResponseEntity<ProfileDTO> login(@Valid @RequestBody AuthorizationDTO dto) {
         return ResponseEntity.ok(authService.login(dto));
     }
+
+    @GetMapping("/registration/email/verification")
+    public ResponseEntity<String> verificationByLink(@RequestParam("id") String id) {
+        return ResponseEntity.ok(authService.verificationByLink(id));
+    }
 }

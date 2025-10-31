@@ -7,8 +7,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class VerificationBySmsDTO {
-    @NotBlank(message = "Phone number required")
-    private String phoneNumber;
+    @NotBlank(message = "userName required")
+    private String userName;
     @NotBlank(message = "Code required")
     private String code;
 }

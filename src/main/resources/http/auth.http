@@ -9,6 +9,16 @@ Content-Type: application/json
   "password": "12345"
 }
 
+### Registration using gmail
+POST localhost:8080/api/v1/auth/registration
+Content-Type: application/json
+
+{
+  "name": "Adham",
+  "surname": "MURODULLAYEV",
+  "username": "adhamjonyaxshiboyev@gmail.com",
+  "password": "12345"
+}
 
 ### Registration using sms
 PUT localhost:8080/api/v1/auth/registration/sms/verification

@@ -14,10 +14,10 @@ public class SmsHistoryEntity {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    @Column(name = "phone_number")
-    private String phoneNumber;
+    @Column(name = "username")
+    private String username;
 
-    @Column(name = "body")
+    @Column(name = "body", columnDefinition = "text")
     private String body;
 
     @Column(name = "code")

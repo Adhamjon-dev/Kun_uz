@@ -11,9 +11,9 @@ import java.util.List;
 import java.util.Optional;
 
 public interface SmsHistoryRepository extends CrudRepository<SmsHistoryEntity, String>, PagingAndSortingRepository<SmsHistoryEntity, String> {
-    Optional<SmsHistoryEntity> findTopByPhoneNumberOrderByCreatedDateDesc(String phoneNumber);
+    Optional<SmsHistoryEntity> findTopByUsernameOrderByCreatedDateDesc(String username);
 
-    List<SmsHistoryEntity> findByPhoneNumber(String  phoneNumber);
+    List<SmsHistoryEntity> findByUsername(String  username);
 
     @Query("from SmsHistoryEntity where createdDate between ?1 and ?2")
     List<SmsHistoryEntity> findByDate(LocalDateTime start, LocalDateTime end);

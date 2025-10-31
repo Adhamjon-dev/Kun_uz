@@ -26,7 +26,7 @@ public class SmsHistoryService {
 
     public void save(String phone, String body, String code) {
         SmsHistoryEntity entity = new SmsHistoryEntity();
-        entity.setPhoneNumber(phone);
+        entity.setUsername(phone);
         entity.setBody(body);
         entity.setCode(code);
         entity.setCreatedDate(LocalDateTime.now());
@@ -50,7 +50,7 @@ public class SmsHistoryService {
     }
 
     public SmsHistoryEntity getSmsByPhone(String phoneNumber) {
-        Optional<SmsHistoryEntity> optional = smsHistoryRepository.findTopByPhoneNumberOrderByCreatedDateDesc(phoneNumber);
+        Optional<SmsHistoryEntity> optional = smsHistoryRepository.findTopByUsernameOrderByCreatedDateDesc(phoneNumber);
         if (optional.isEmpty()) {
             throw new AppBadException("Invalid phone number");
         }
@@ -58,7 +58,7 @@ public class SmsHistoryService {
     }
 
     public List<SmsHistoryDTO> getSmsDtoByPhone(String phone) {
-        Iterable<SmsHistoryEntity> entities = smsHistoryRepository.findByPhoneNumber(phone);
+        Iterable<SmsHistoryEntity> entities = smsHistoryRepository.findByUsername(phone);
         List<SmsHistoryDTO> list = new ArrayList<>();
         entities.forEach(entity -> list.add(toDto(entity)));
         return list;
@@ -88,7 +88,7 @@ public class SmsHistoryService {
     private SmsHistoryDTO toDto(SmsHistoryEntity smsHistoryEntity) {
         SmsHistoryDTO smsHistoryDTO = new SmsHistoryDTO();
         smsHistoryDTO.setId(smsHistoryEntity.getId());
-        smsHistoryDTO.setPhoneNumber(smsHistoryEntity.getPhoneNumber());
+        smsHistoryDTO.setPhoneNumber(smsHistoryEntity.getUsername());
         smsHistoryDTO.setBody(smsHistoryEntity.getBody());
         smsHistoryDTO.setCode(smsHistoryEntity.getCode());
         smsHistoryDTO.setCreatedDate(smsHistoryEntity.getCreatedDate());

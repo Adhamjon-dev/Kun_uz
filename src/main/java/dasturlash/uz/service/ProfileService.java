@@ -136,7 +136,19 @@ public class ProfileService {
         return toDto(entity);
     }
 
+    public Integer getIdByUsername(String username) {
+        Optional<ProfileEntity> optional =  profileRepository.findByUsernameAndVisibleTrue(username);
+        if (optional.isEmpty()) {
+            throw new AppBadException("Username not found");
+        }
+        return optional.get().getId();
+    }
+
     public void setStatusByUsername(ProfileStatus status, String username) {
         profileRepository.setStatusByUsername(status, username);
+    }
+
+    public Optional<ProfileEntity> getProfileById(Integer id) {
+        return profileRepository.findByIdAndStatusAndVisibleTrue(id, ProfileStatus.NOT_ACTIVE);
     }
 }
