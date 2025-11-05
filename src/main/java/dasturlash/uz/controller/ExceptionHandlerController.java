@@ -1,5 +1,6 @@
 package dasturlash.uz.controller;
 
+import dasturlash.uz.exp.AppAccessDeniedException;
 import dasturlash.uz.exp.AppBadException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -23,9 +24,14 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler({RuntimeException.class})
-    public ResponseEntity<String> handle(RuntimeException e) {
+    public ResponseEntity<String> handleBadRole(RuntimeException e) {
         e.printStackTrace();
         return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler({AppAccessDeniedException.class})
+    public ResponseEntity<String> handleBadRole(AppAccessDeniedException e) {
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.FORBIDDEN);
     }
 
     @Override

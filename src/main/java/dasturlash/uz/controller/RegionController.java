@@ -1,9 +1,13 @@
 package dasturlash.uz.controller;
 
 import dasturlash.uz.dto.RegionDTO;
+import dasturlash.uz.dto.auth.JwtDTO;
 import dasturlash.uz.enums.AppLanguageEnum;
+import dasturlash.uz.enums.ProfileRoleEnum;
+import dasturlash.uz.exp.AppAccessDeniedException;
 import dasturlash.uz.mapper.LanguageMapper;
 import dasturlash.uz.service.RegionService;
+import dasturlash.uz.util.JwtUtil;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,23 +23,47 @@ public class RegionController {
     private RegionService regionService;
 
     @PostMapping({"", "/"}) //   localhost:8080/api/v1/region
-    public ResponseEntity<RegionDTO> create(@Valid @RequestBody RegionDTO dto) {
+    public ResponseEntity<RegionDTO> create(@Valid @RequestBody RegionDTO dto,
+                                            @RequestHeader("Authorization") String token) {
+        final String jwt = token.substring(7).trim();
+        JwtDTO jwtDTO = JwtUtil.decode(jwt);
+        if (!jwtDTO.getRoles().contains(ProfileRoleEnum.ROLE_ADMIN)) {
+            throw new AppAccessDeniedException("Mazgi you do not have permission");
+        }
         return ResponseEntity.ok(regionService.create(dto));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Boolean> update(@PathVariable Integer id, @Valid @RequestBody RegionDTO dto) {
+    public ResponseEntity<Boolean> update(@PathVariable Integer id,
+                                          @Valid @RequestBody RegionDTO dto,
+                                          @RequestHeader("Authorization") String token) {
+        final String jwt = token.substring(7).trim();
+        JwtDTO jwtDTO = JwtUtil.decode(jwt);
+        if (!jwtDTO.getRoles().contains(ProfileRoleEnum.ROLE_ADMIN)) {
+            throw new AppAccessDeniedException("Mazgi you do not have permission");
+        }
         return ResponseEntity.ok(regionService.update(dto, id));
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<Void> delete(@PathVariable Integer id) {
+    public ResponseEntity<Void> delete(@PathVariable Integer id,
+                                       @RequestHeader("Authorization") String token) {
+        final String jwt = token.substring(7).trim();
+        JwtDTO jwtDTO = JwtUtil.decode(jwt);
+        if (!jwtDTO.getRoles().contains(ProfileRoleEnum.ROLE_ADMIN)) {
+            throw new AppAccessDeniedException("Mazgi you do not have permission");
+        }
         regionService.delete(id);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping({"", "/"})
-    public ResponseEntity<List<RegionDTO>> getAll() {
+    public ResponseEntity<List<RegionDTO>> getAll(@RequestHeader("Authorization") String token) {
+        final String jwt = token.substring(7).trim();
+        JwtDTO jwtDTO = JwtUtil.decode(jwt);
+        if (!jwtDTO.getRoles().contains(ProfileRoleEnum.ROLE_ADMIN)) {
+            throw new AppAccessDeniedException("Mazgi you do not have permission");
+        }
         return ResponseEntity.ok(regionService.getAll());
     }
 

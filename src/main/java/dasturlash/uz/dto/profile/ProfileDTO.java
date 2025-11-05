@@ -34,5 +34,5 @@ public class ProfileDTO {
 
     private LocalDateTime createdDate;
     private ProfileStatus status;
-    private Boolean visible;
+    private String jwt;
 }

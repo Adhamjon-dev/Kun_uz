@@ -1,6 +1,7 @@
 package dasturlash.uz.service;
 
 import dasturlash.uz.dto.CustomFilterResultDTO;
+import dasturlash.uz.dto.auth.JwtDTO;
 import dasturlash.uz.dto.profile.*;
 import dasturlash.uz.entitiy.ProfileEntity;
 import dasturlash.uz.enums.ProfileStatus;
@@ -60,10 +61,13 @@ public class ProfileService {
         return Boolean.TRUE;
     }
 
-    public Boolean updateOwn(Integer profileId, UpdateProfileOwnDTO newProfile) {
+    public Boolean updateOwn(Integer profileId, UpdateProfileOwnDTO newProfile, JwtDTO jwtDTO) {
         Optional<ProfileEntity> optional = profileRepository.findByIdAndVisibleTrue(profileId);
         if (optional.isEmpty()) {
             throw new AppBadException("User not found");
+        }
+        if (!optional.get().getUsername().equals(jwtDTO.getUsername())) {
+            throw new AppBadException("Username not match");
         }
         Optional<ProfileEntity> opt = profileRepository.findByUsernameAndVisibleTrueAndIdNot(newProfile.getUsername(), profileId);
         if (opt.isPresent()) {
@@ -76,12 +80,15 @@ public class ProfileService {
         return Boolean.TRUE;
     }
 
-    public Boolean updatePassword(Integer profileId, ProfileUpdatePasswordDTO dto) {
+    public Boolean updatePassword(Integer profileId, ProfileUpdatePasswordDTO dto, JwtDTO jwtDTO) {
         Optional<ProfileEntity> optional = profileRepository.findByIdAndVisibleTrue(profileId);
         if (optional.isEmpty()) {
             throw new AppBadException("User not found");
         }
         ProfileEntity entity = optional.get();
+        if (!entity.getUsername().equals(jwtDTO.getUsername())) {
+            throw new AppBadException("Username not match");
+        }
         if (bCryptPasswordEncoder.matches(entity.getPassword(), dto.getCurrentPassword())) {
             entity.setPassword(bCryptPasswordEncoder.encode(dto.getNewPassword()));
             return Boolean.TRUE;
@@ -109,7 +116,6 @@ public class ProfileService {
         dto.setPassword(entity.getPassword());
         dto.setUsername(entity.getUsername());
         dto.setStatus(entity.getStatus());
-        dto.setVisible(entity.getVisible());
         return dto;
     }
 

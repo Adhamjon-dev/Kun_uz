@@ -2,9 +2,13 @@ package dasturlash.uz.controller;
 
 import dasturlash.uz.dto.RegionDTO;
 import dasturlash.uz.dto.SectionDTO;
+import dasturlash.uz.dto.auth.JwtDTO;
 import dasturlash.uz.enums.AppLanguageEnum;
+import dasturlash.uz.enums.ProfileRoleEnum;
+import dasturlash.uz.exp.AppAccessDeniedException;
 import dasturlash.uz.mapper.LanguageMapper;
 import dasturlash.uz.service.SectionService;
+import dasturlash.uz.util.JwtUtil;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageImpl;
@@ -20,29 +24,59 @@ public class SectionController {
     private SectionService sectionService;
 
     @PostMapping({"", "/"})
-    public ResponseEntity<SectionDTO> create(@Valid @RequestBody SectionDTO dto) {
+    public ResponseEntity<SectionDTO> create(@Valid @RequestBody SectionDTO dto,
+                                             @RequestHeader("Authorization") String token) {
+        final String jwt = token.substring(7).trim();
+        JwtDTO jwtDTO = JwtUtil.decode(jwt);
+        if (!jwtDTO.getRoles().contains(ProfileRoleEnum.ROLE_ADMIN)) {
+            throw new AppAccessDeniedException("Mazgi you do not have permission");
+        }
         return ResponseEntity.ok(sectionService.create(dto));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Boolean> update(@PathVariable Integer id, @Valid @RequestBody SectionDTO dto) {
+    public ResponseEntity<Boolean> update(@PathVariable Integer id,
+                                          @Valid @RequestBody SectionDTO dto,
+                                          @RequestHeader("Authorization") String token) {
+        final String jwt = token.substring(7).trim();
+        JwtDTO jwtDTO = JwtUtil.decode(jwt);
+        if (!jwtDTO.getRoles().contains(ProfileRoleEnum.ROLE_ADMIN)) {
+            throw new AppAccessDeniedException("Mazgi you do not have permission");
+        }
         return ResponseEntity.ok(sectionService.update(dto, id));
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<Void> delete(@PathVariable Integer id) {
+    public ResponseEntity<Void> delete(@PathVariable Integer id,
+                                       @RequestHeader("Authorization") String token) {
+        final String jwt = token.substring(7).trim();
+        JwtDTO jwtDTO = JwtUtil.decode(jwt);
+        if (!jwtDTO.getRoles().contains(ProfileRoleEnum.ROLE_ADMIN)) {
+            throw new AppAccessDeniedException("Mazgi you do not have permission");
+        }
         sectionService.delete(id);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping({"", "/"})
-    public ResponseEntity<List<SectionDTO>> getAll() {
+    public ResponseEntity<List<SectionDTO>> getAll(@RequestHeader("Authorization") String token) {
+        final String jwt = token.substring(7).trim();
+        JwtDTO jwtDTO = JwtUtil.decode(jwt);
+        if (!jwtDTO.getRoles().contains(ProfileRoleEnum.ROLE_ADMIN)) {
+            throw new AppAccessDeniedException("Mazgi you do not have permission");
+        }
         return ResponseEntity.ok(sectionService.getAll());
     }
 
     @GetMapping("/pagination")
     public ResponseEntity<PageImpl<SectionDTO>> getAllPagination(@RequestParam(value = "page", defaultValue = "1") int page,
-                                                                 @RequestParam(value = "size", defaultValue = "2") int size) {
+                                                                 @RequestParam(value = "size", defaultValue = "2") int size,
+                                                                 @RequestHeader("Authorization") String token) {
+        final String jwt = token.substring(7).trim();
+        JwtDTO jwtDTO = JwtUtil.decode(jwt);
+        if (!jwtDTO.getRoles().contains(ProfileRoleEnum.ROLE_ADMIN)) {
+            throw new AppAccessDeniedException("Mazgi you do not have permission");
+        }
         return ResponseEntity.ok(sectionService.getAllPagination(page-1, size));
     }
 

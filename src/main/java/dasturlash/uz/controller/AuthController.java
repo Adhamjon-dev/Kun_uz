@@ -33,6 +33,6 @@ public class AuthController {
 
     @GetMapping("/registration/email/verification")
     public ResponseEntity<String> verificationByLink(@RequestParam("id") String id) {
-        return ResponseEntity.ok(authService.verificationByLink(id));
+        return ResponseEntity.ok(authService.verificationByEmail(id));
     }
 }

@@ -1,6 +1,7 @@
 package dasturlash.uz.service;
 
 import dasturlash.uz.dto.auth.AuthorizationDTO;
+import dasturlash.uz.dto.auth.JwtDTO;
 import dasturlash.uz.dto.auth.VerificationBySmsDTO;
 import dasturlash.uz.dto.auth.RegistrationDTO;
 import dasturlash.uz.dto.profile.ProfileDTO;
@@ -9,6 +10,7 @@ import dasturlash.uz.enums.ProfileRoleEnum;
 import dasturlash.uz.enums.ProfileStatus;
 import dasturlash.uz.exp.AppBadException;
 import dasturlash.uz.repository.ProfileRepository;
+import dasturlash.uz.util.JwtUtil;
 import dasturlash.uz.util.ValidatorUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -97,6 +99,7 @@ public class AuthService {
         response.setSurname(entity.getSurname());
         response.setUsername(entity.getUsername());
         response.setRoleList(profileRoleService.getByProfileId(entity.getId()));
+        response.setJwt(JwtUtil.encode(entity.getUsername(),response.getRoleList()));
         return response;
     }
 
@@ -108,4 +111,20 @@ public class AuthService {
         }
         throw new AppBadException("Wrong sms code");
     }
+
+    public String verificationByEmail(String jwtToken) {
+        JwtDTO jwtDTO = JwtUtil.decode(jwtToken);
+        Optional<ProfileEntity> optional = profileService.getProfileById(Integer.parseInt(jwtDTO.getUsername()));
+        if (optional.isPresent()) {
+            profileService.setStatusByUsername(ProfileStatus.ACTIVE, optional.get().getUsername());
+            return "Verification Success!";
+        }
+        throw new AppBadException("Wrong sms code");
+    }
+    public String verificationByEmaild(String jwtToken) {
+        JwtDTO jwtDTO = JwtUtil.decode(jwtToken);
+        profileService.setStatusByUsername(ProfileStatus.ACTIVE, jwtDTO.getUsername());
+        return "Verification Success!";
+    }
+
 }

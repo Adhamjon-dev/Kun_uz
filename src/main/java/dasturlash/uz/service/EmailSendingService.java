@@ -1,5 +1,6 @@
 package dasturlash.uz.service;
 
+import dasturlash.uz.util.JwtUtil;
 import dasturlash.uz.util.RandomUtil;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
@@ -9,6 +10,8 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+
+import java.util.LinkedList;
 
 @Service
 public class EmailSendingService {
@@ -74,7 +77,8 @@ public class EmailSendingService {
     }
 
     public void sendRegistrationEmailLink(String toAccount, String name) {
-        String token = profileService.getIdByUsername(toAccount).toString();
+        String id = profileService.getIdByUsername(toAccount).toString();
+        String token =  JwtUtil.encode(id, new LinkedList<>());
         String confirmUrl = "http://localhost:8080/api/v1/auth/registration/email/verification?id=" + token;
         String body = """
             <!DOCTYPE html>
