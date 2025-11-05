@@ -1,7 +1,7 @@
 ### Create
 POST localhost:8080/api/v1/profile
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjpbIlJPTEVfVVNFUiJdLCJzdWIiOiJhZGhhbWpvbnlheHNoaWJveWV2QGdtYWlsLmNvbSIsImlhdCI6MTc2MTkyNzI4NSwiZXhwIjoxNzYyMDEzNjg1fQ.zCkv12sbabzcBk0e6DZHMImxbIx3QUZVq1CCZpXINb8gF5OyyB4fDgzFNnwpYDbDzrh5FFXu1jVaH-eMEVykww
+Authorization: Basic YWRoYW1qb255YXhzaGlib3lldkBnbWFpbC5jb206MTIzNDU=
 
 {
   "name": "Eshmat3",
@@ -16,7 +16,7 @@ Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjpbIlJPTEVfVVNFUiJdLCJzdWIiO
 ### update Admin
 PUT localhost:8080/api/v1/profile/admin/1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjpbIlJPTEVfVVNFUiJdLCJzdWIiOiJhZGhhbWpvbnlheHNoaWJveWV2QGdtYWlsLmNvbSIsImlhdCI6MTc2MTkyNzI4NSwiZXhwIjoxNzYyMDEzNjg1fQ.zCkv12sbabzcBk0e6DZHMImxbIx3QUZVq1CCZpXINb8gF5OyyB4fDgzFNnwpYDbDzrh5FFXu1jVaH-eMEVykww
+Authorization: Basic YWRoYW1qb255YXhzaGlib3lldkBnbWFpbC5jb206MTIzNDU=
 
 {
   "roleList": [
@@ -27,31 +27,30 @@ Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjpbIlJPTEVfVVNFUiJdLCJzdWIiO
 }
 
 ### update Own
-PUT localhost:8080/api/v1/profile/own/1
+PUT localhost:8080/api/v1/profile/own/39
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjpbIlJPTEVfVVNFUiJdLCJzdWIiOiJhZGhhbWpvbnlheHNoaWJveWV2QGdtYWlsLmNvbSIsImlhdCI6MTc2MTkyNzI4NSwiZXhwIjoxNzYyMDEzNjg1fQ.zCkv12sbabzcBk0e6DZHMImxbIx3QUZVq1CCZpXINb8gF5OyyB4fDgzFNnwpYDbDzrh5FFXu1jVaH-eMEVykww
+Authorization: Basic YWRoYW1qb255YXhzaGlib3lldkBnbWFpbC5jb206MTIzNDU=
 
 {
-  "name": "Eshmat30",
-  "surname": "Eshmatov30",
-  "username": "eshmat3@gmail.com",
-  "password": "12345"
+  "name": "Adhamjon",
+  "surname": "Yaxshiboyev",
+  "username": "adhamjonyaxshiboyev@gmail.com"
 }
 
 ### delete
 DELETE localhost:8080/api/v1/profile/1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjpbIlJPTEVfVVNFUiJdLCJzdWIiOiJhZGhhbWpvbnlheHNoaWJveWV2QGdtYWlsLmNvbSIsImlhdCI6MTc2MTkyNzI4NSwiZXhwIjoxNzYyMDEzNjg1fQ.zCkv12sbabzcBk0e6DZHMImxbIx3QUZVq1CCZpXINb8gF5OyyB4fDgzFNnwpYDbDzrh5FFXu1jVaH-eMEVykww
+Authorization: Basic YWRoYW1qb255YXhzaGlib3lldkBnbWFpbC5jb206MTIzNDU=
 
 ### Get all Pagination
 GET localhost:8080/api/v1/profile/pagination?size=10
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjpbIlJPTEVfVVNFUiJdLCJzdWIiOiJhZGhhbWpvbnlheHNoaWJveWV2QGdtYWlsLmNvbSIsImlhdCI6MTc2MTkyNzI4NSwiZXhwIjoxNzYyMDEzNjg1fQ.zCkv12sbabzcBk0e6DZHMImxbIx3QUZVq1CCZpXINb8gF5OyyB4fDgzFNnwpYDbDzrh5FFXu1jVaH-eMEVykww
+Authorization: Basic YWRoYW1qb255YXhzaGlib3lldkBnbWFpbC5jb206MTIzNDU=
 
 ### Filter
 POST localhost:8080/api/v1/profile/filter?size=10
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjpbIlJPTEVfVVNFUiJdLCJzdWIiOiJhZGhhbWpvbnlheHNoaWJveWV2QGdtYWlsLmNvbSIsImlhdCI6MTc2MTkyNzI4NSwiZXhwIjoxNzYyMDEzNjg1fQ.zCkv12sbabzcBk0e6DZHMImxbIx3QUZVq1CCZpXINb8gF5OyyB4fDgzFNnwpYDbDzrh5FFXu1jVaH-eMEVykww
+Authorization: Basic YWRoYW1qb255YXhzaGlib3lldkBnbWFpbC5jb206MTIzNDU=
 
 {
   "createdDateFrom": "2025-10-20",
@@ -62,7 +61,7 @@ Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjpbIlJPTEVfVVNFUiJdLCJzdWIiO
 ### Update password
 PUT localhost:8080/api/v1/profile/password/1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjpbIlJPTEVfVVNFUiJdLCJzdWIiOiJhZGhhbWpvbnlheHNoaWJveWV2QGdtYWlsLmNvbSIsImlhdCI6MTc2MTkyNzI4NSwiZXhwIjoxNzYyMDEzNjg1fQ.zCkv12sbabzcBk0e6DZHMImxbIx3QUZVq1CCZpXINb8gF5OyyB4fDgzFNnwpYDbDzrh5FFXu1jVaH-eMEVykww
+Authorization: Basic YWRoYW1qb255YXhzaGlib3lldkBnbWFpbC5jb206MTIzNDU=
 
 {
   "currentPassword": "12345",
@@ -70,6 +69,6 @@ Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjpbIlJPTEVfVVNFUiJdLCJzdWIiO
 }
 
 ### Get By Id
-GET localhost:8080/api/v1/profile/get/1
+GET localhost:8080/api/v1/profile/get/39
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjpbIlJPTEVfVVNFUiJdLCJzdWIiOiJhZGhhbWpvbnlheHNoaWJveWV2QGdtYWlsLmNvbSIsImlhdCI6MTc2MTkyNzI4NSwiZXhwIjoxNzYyMDEzNjg1fQ.zCkv12sbabzcBk0e6DZHMImxbIx3QUZVq1CCZpXINb8gF5OyyB4fDgzFNnwpYDbDzrh5FFXu1jVaH-eMEVykww
+Authorization: Basic YWRoYW1qb255YXhzaGlib3lldkBnbWFpbC5jb206MTIzNDU=

@@ -9,10 +9,12 @@ import dasturlash.uz.entitiy.ProfileEntity;
 import dasturlash.uz.enums.ProfileRoleEnum;
 import dasturlash.uz.enums.ProfileStatus;
 import dasturlash.uz.exp.AppBadException;
+import dasturlash.uz.exp.ProfileNotFoundException;
 import dasturlash.uz.repository.ProfileRepository;
 import dasturlash.uz.util.JwtUtil;
 import dasturlash.uz.util.ValidatorUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -84,14 +86,14 @@ public class AuthService {
     public ProfileDTO login(AuthorizationDTO dto) {
         Optional<ProfileEntity> profileOptional = profileRepository.findByUsernameAndVisibleTrue(dto.getUsername());
         if (profileOptional.isEmpty()) {
-            throw new AppBadException("Username or password wrong");
+            throw new ProfileNotFoundException("Phone or password wrong");
         }
         ProfileEntity entity = profileOptional.get();
         if (!bCryptPasswordEncoder.matches(dto.getPassword(), entity.getPassword())) {
-            throw new AppBadException("Username or password wrong");
+            throw new UsernameNotFoundException("Phone or password wrong");
         }
         if (!entity.getStatus().equals(ProfileStatus.ACTIVE)) {
-            throw new AppBadException("User in wrong status");
+            throw new UsernameNotFoundException("Phone or password wrong");
         }
         ProfileDTO response = new ProfileDTO();
         response.setId(entity.getId());

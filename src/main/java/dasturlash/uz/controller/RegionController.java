@@ -23,47 +23,24 @@ public class RegionController {
     private RegionService regionService;
 
     @PostMapping({"", "/"}) //   localhost:8080/api/v1/region
-    public ResponseEntity<RegionDTO> create(@Valid @RequestBody RegionDTO dto,
-                                            @RequestHeader("Authorization") String token) {
-        final String jwt = token.substring(7).trim();
-        JwtDTO jwtDTO = JwtUtil.decode(jwt);
-        if (!jwtDTO.getRoles().contains(ProfileRoleEnum.ROLE_ADMIN)) {
-            throw new AppAccessDeniedException("Mazgi you do not have permission");
-        }
+    public ResponseEntity<RegionDTO> create(@Valid @RequestBody RegionDTO dto) {
         return ResponseEntity.ok(regionService.create(dto));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Boolean> update(@PathVariable Integer id,
-                                          @Valid @RequestBody RegionDTO dto,
-                                          @RequestHeader("Authorization") String token) {
-        final String jwt = token.substring(7).trim();
-        JwtDTO jwtDTO = JwtUtil.decode(jwt);
-        if (!jwtDTO.getRoles().contains(ProfileRoleEnum.ROLE_ADMIN)) {
-            throw new AppAccessDeniedException("Mazgi you do not have permission");
-        }
+                                          @Valid @RequestBody RegionDTO dto) {
         return ResponseEntity.ok(regionService.update(dto, id));
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<Void> delete(@PathVariable Integer id,
-                                       @RequestHeader("Authorization") String token) {
-        final String jwt = token.substring(7).trim();
-        JwtDTO jwtDTO = JwtUtil.decode(jwt);
-        if (!jwtDTO.getRoles().contains(ProfileRoleEnum.ROLE_ADMIN)) {
-            throw new AppAccessDeniedException("Mazgi you do not have permission");
-        }
+    public ResponseEntity<Void> delete(@PathVariable Integer id) {
         regionService.delete(id);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping({"", "/"})
-    public ResponseEntity<List<RegionDTO>> getAll(@RequestHeader("Authorization") String token) {
-        final String jwt = token.substring(7).trim();
-        JwtDTO jwtDTO = JwtUtil.decode(jwt);
-        if (!jwtDTO.getRoles().contains(ProfileRoleEnum.ROLE_ADMIN)) {
-            throw new AppAccessDeniedException("Mazgi you do not have permission");
-        }
+    public ResponseEntity<List<RegionDTO>> getAll() {
         return ResponseEntity.ok(regionService.getAll());
     }
 

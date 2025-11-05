@@ -1,7 +1,7 @@
 ### Create section
 POST localhost:8080/api/v1/section
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjpbIlJPTEVfVVNFUiJdLCJzdWIiOiJhZGhhbWpvbnlheHNoaWJveWV2QGdtYWlsLmNvbSIsImlhdCI6MTc2MTkyNzI4NSwiZXhwIjoxNzYyMDEzNjg1fQ.zCkv12sbabzcBk0e6DZHMImxbIx3QUZVq1CCZpXINb8gF5OyyB4fDgzFNnwpYDbDzrh5FFXu1jVaH-eMEVykww
+Authorization: Basic YWRoYW1qb255YXhzaGlib3lldkBnbWFpbC5jb206MTIzNDU=
 
 {
   "orderNumber": 3,
@@ -14,12 +14,12 @@ Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjpbIlJPTEVfVVNFUiJdLCJzdWIiO
 ### Get pagination section
 GET localhost:8080/api/v1/section/pagination?page = 2&size = 2
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjpbIlJPTEVfVVNFUiJdLCJzdWIiOiJhZGhhbWpvbnlheHNoaWJveWV2QGdtYWlsLmNvbSIsImlhdCI6MTc2MTkyNzI4NSwiZXhwIjoxNzYyMDEzNjg1fQ.zCkv12sbabzcBk0e6DZHMImxbIx3QUZVq1CCZpXINb8gF5OyyB4fDgzFNnwpYDbDzrh5FFXu1jVaH-eMEVykww
+Authorization: Basic YWRoYW1qb255YXhzaGlib3lldkBnbWFpbC5jb206MTIzNDU=
 
 ### Update section
 PUT localhost:8080/api/v1/section/1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjpbIlJPTEVfVVNFUiJdLCJzdWIiOiJhZGhhbWpvbnlheHNoaWJveWV2QGdtYWlsLmNvbSIsImlhdCI6MTc2MTkyNzI4NSwiZXhwIjoxNzYyMDEzNjg1fQ.zCkv12sbabzcBk0e6DZHMImxbIx3QUZVq1CCZpXINb8gF5OyyB4fDgzFNnwpYDbDzrh5FFXu1jVaH-eMEVykww
+Authorization: Basic YWRoYW1qb255YXhzaGlib3lldkBnbWFpbC5jb206MTIzNDU=
 
 {
   "orderNumber": 1,
@@ -32,7 +32,7 @@ Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjpbIlJPTEVfVVNFUiJdLCJzdWIiO
 ### Delete section
 DELETE localhost:8080/api/v1/section/
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjpbIlJPTEVfVVNFUiJdLCJzdWIiOiJhZGhhbWpvbnlheHNoaWJveWV2QGdtYWlsLmNvbSIsImlhdCI6MTc2MTkyNzI4NSwiZXhwIjoxNzYyMDEzNjg1fQ.zCkv12sbabzcBk0e6DZHMImxbIx3QUZVq1CCZpXINb8gF5OyyB4fDgzFNnwpYDbDzrh5FFXu1jVaH-eMEVykww
+Authorization: Basic YWRoYW1qb255YXhzaGlib3lldkBnbWFpbC5jb206MTIzNDU=
 
 ### Get by lang
 GET localhost:8080/api/v1/section/lang

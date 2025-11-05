@@ -2,6 +2,7 @@ package dasturlash.uz.controller;
 
 import dasturlash.uz.exp.AppAccessDeniedException;
 import dasturlash.uz.exp.AppBadException;
+import dasturlash.uz.exp.ProfileNotFoundException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -32,6 +33,11 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
     @ExceptionHandler({AppAccessDeniedException.class})
     public ResponseEntity<String> handleBadRole(AppAccessDeniedException e) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.FORBIDDEN);
+    }
+
+    @ExceptionHandler({ProfileNotFoundException.class})
+    public ResponseEntity<String> handleProfileNotFound(ProfileNotFoundException e) {
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
     }
 
     @Override

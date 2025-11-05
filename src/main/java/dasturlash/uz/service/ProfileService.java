@@ -10,6 +10,7 @@ import dasturlash.uz.repository.CustomProfileRepository;
 import dasturlash.uz.repository.ProfileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -58,15 +59,16 @@ public class ProfileService {
         ProfileEntity entity = optional.get();
         entity.setStatus(newProfile.getStatus());
         profileRoleService.update(profileId, newProfile.getRoleList());
+        profileRepository.save(entity);
         return Boolean.TRUE;
     }
 
-    public Boolean updateOwn(Integer profileId, UpdateProfileOwnDTO newProfile, JwtDTO jwtDTO) {
+    public Boolean updateOwn(Integer profileId, UpdateProfileOwnDTO newProfile, UserDetails userDetails) {
         Optional<ProfileEntity> optional = profileRepository.findByIdAndVisibleTrue(profileId);
         if (optional.isEmpty()) {
             throw new AppBadException("User not found");
         }
-        if (!optional.get().getUsername().equals(jwtDTO.getUsername())) {
+        if (!optional.get().getUsername().equals(userDetails.getUsername())) {
             throw new AppBadException("Username not match");
         }
         Optional<ProfileEntity> opt = profileRepository.findByUsernameAndVisibleTrueAndIdNot(newProfile.getUsername(), profileId);
@@ -77,20 +79,22 @@ public class ProfileService {
         entity.setName(newProfile.getName());
         entity.setSurname(newProfile.getSurname());
         entity.setUsername(newProfile.getUsername());
+        profileRepository.save(entity);
         return Boolean.TRUE;
     }
 
-    public Boolean updatePassword(Integer profileId, ProfileUpdatePasswordDTO dto, JwtDTO jwtDTO) {
+    public Boolean updatePassword(Integer profileId, ProfileUpdatePasswordDTO dto, UserDetails userDetails) {
         Optional<ProfileEntity> optional = profileRepository.findByIdAndVisibleTrue(profileId);
         if (optional.isEmpty()) {
             throw new AppBadException("User not found");
         }
         ProfileEntity entity = optional.get();
-        if (!entity.getUsername().equals(jwtDTO.getUsername())) {
+        if (!entity.getUsername().equals(userDetails.getUsername())) {
             throw new AppBadException("Username not match");
         }
         if (bCryptPasswordEncoder.matches(entity.getPassword(), dto.getCurrentPassword())) {
             entity.setPassword(bCryptPasswordEncoder.encode(dto.getNewPassword()));
+            profileRepository.save(entity);
             return Boolean.TRUE;
         }
         throw new AppBadException("Current password does not match");

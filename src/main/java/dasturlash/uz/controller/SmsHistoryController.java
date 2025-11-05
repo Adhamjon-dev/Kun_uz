@@ -32,13 +32,7 @@ public class SmsHistoryController {
 
     @GetMapping("/pagination")
     public ResponseEntity<PageImpl<SmsHistoryDTO>> pagination(@RequestParam(value = "page", defaultValue = "1") int page,
-                                                              @RequestParam(value = "size", defaultValue = "5") int size,
-                                                              @RequestHeader("Authorization") String token) {
-        final String jwt = token.substring(7).trim();
-        JwtDTO jwtDTO = JwtUtil.decode(jwt);
-        if (!jwtDTO.getRoles().contains(ProfileRoleEnum.ROLE_ADMIN)) {
-            throw new AppAccessDeniedException("Mazgi you do not have permission");
-        }
+                                                              @RequestParam(value = "size", defaultValue = "5") int size) {
         return ResponseEntity.ok(smsHistoryService.pagination(page, size));
     }
 }

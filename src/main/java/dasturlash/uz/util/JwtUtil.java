@@ -46,4 +46,15 @@ public class JwtUtil {
         List<ProfileRoleEnum>  roles = (List<ProfileRoleEnum>) claims.get("role");
         return new JwtDTO(username, roles);
     }
+
+    public boolean isTokenValid(String token) {
+        Claims claims = Jwts
+                .parser()
+                .verifyWith(getSignInKey())
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
+        Date expDate = claims.getExpiration();
+        return expDate.before(new Date());
+    }
 }
