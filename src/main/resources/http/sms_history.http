@@ -7,4 +7,4 @@ GET localhost:8080/api/v1/sms/date?date="2025-10-27"
 ### get pagination
 GET localhost:8080/api/v1/sms/pagination
 Content-Type: application/json
-Authorization: Basic YWRoYW1qb255YXhzaGlib3lldkBnbWFpbC5jb206MTIzNDU=
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjpbIlJPTEVfVVNFUiIsIlJPTEVfQURNSU4iXSwic3ViIjoiYWRoYW1qb255YXhzaGlib3lldkBnbWFpbC5jb20iLCJpYXQiOjE3NjI0OTU3MzksImV4cCI6MTc2MjU4MjEzOX0.FnA6Fr22MRPc4Hx6Ej2ZdjNy3HEyeZJ0vD5rKsnOtByxhEszSQcBiuvaPWHI5D4CyD60cLJOPal06CKnxGYwww

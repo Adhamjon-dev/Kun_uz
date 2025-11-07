@@ -30,7 +30,8 @@ public class CustomUserDetailsService implements UserDetailsService {
         }
         ProfileEntity profile = optional.get();
         List<ProfileRoleEnum> roleList = profileRoleRepository.getRoleListByProfileId(profile.getId());
-        return new CustomUserDetails(profile.getName(),
+        return new CustomUserDetails(profile.getId(),
+                profile.getName(),
                 profile.getSurname(),
                 profile.getUsername(),
                 profile.getPassword(),

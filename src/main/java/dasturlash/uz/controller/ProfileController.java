@@ -1,13 +1,12 @@
 package dasturlash.uz.controller;
 
-import dasturlash.uz.dto.auth.JwtDTO;
 import dasturlash.uz.dto.profile.*;
 import dasturlash.uz.service.ProfileService;
+import dasturlash.uz.util.SpringSecurityUtil;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,19 +30,15 @@ public class ProfileController {
 
     @PutMapping("/own/{id}")
     public ResponseEntity<Boolean> updateOwn(@PathVariable Integer id,
-                                             @Valid @RequestBody UpdateProfileOwnDTO dto,
-                                             Authentication authentication) {
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-
+                                             @Valid @RequestBody UpdateProfileOwnDTO dto) {
+        UserDetails userDetails = SpringSecurityUtil.getCurrentUser();
         return ResponseEntity.ok(profileService.updateOwn(id, dto, userDetails));
     }
 
     @PutMapping("/password/{id}")
     public ResponseEntity<Boolean> updatePassword(@PathVariable Integer id,
-                                                  @Valid @RequestBody ProfileUpdatePasswordDTO dto,
-                                                  Authentication authentication) {
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-
+                                                  @Valid @RequestBody ProfileUpdatePasswordDTO dto) {
+        UserDetails userDetails = SpringSecurityUtil.getCurrentUser();
         return ResponseEntity.ok(profileService.updatePassword(id, dto, userDetails));
     }
 

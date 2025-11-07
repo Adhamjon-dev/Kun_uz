@@ -13,6 +13,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -21,6 +22,13 @@ public class SpringSecurityConfig {
     private CustomUserDetailsService customUserDetailsService;
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
+    @Autowired
+    private JwtAuthenticationFilter jwtAuthenticationFilter;
+
+    public static final String[] AUTH_WHITELIST = {
+            "/api/v1/auth/**",
+            "/api/v1/*/lang"
+    };
 
     @Bean
     public AuthenticationProvider authenticationProvider() {
@@ -38,8 +46,7 @@ public class SpringSecurityConfig {
         // authorization - Foydalanuvchining tizimdagi huquqlarini tekshirish.
         http.authorizeHttpRequests(authorizationManagerRequestMatcherRegistry -> {
             authorizationManagerRequestMatcherRegistry
-                    .requestMatchers("/api/v1/auth/**",
-                            "/api/v1/*/lang").permitAll()
+                    .requestMatchers(AUTH_WHITELIST).permitAll()
                     .requestMatchers("/api/v1/region",
                             "/api/v1/region/",
                             "/api/v1/region/*",
@@ -60,10 +67,7 @@ public class SpringSecurityConfig {
                     .requestMatchers("/api/v1/profile/own/*", "/api/v1/profile/password/*").hasRole("USER")
                     .anyRequest()
                     .authenticated();
-        }).formLogin(Customizer.withDefaults());
-
-        http.httpBasic(Customizer.withDefaults()); // httpBasic-dan foydanalish uchun u enable qilindi (ishlatmoqchi ekanligimiz yozildi) (yoqib qo'yild).
-
+        }).addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
 //        http.csrf(Customizer.withDefaults()); // csrf yoqilgan
         http.csrf(AbstractHttpConfigurer::disable);

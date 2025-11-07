@@ -1,7 +1,7 @@
 ### Create
 POST localhost:8080/api/v1/profile
 Content-Type: application/json
-Authorization: Basic YWRoYW1qb255YXhzaGlib3lldkBnbWFpbC5jb206MTIzNDU=
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjpbIlJPTEVfVVNFUiIsIlJPTEVfQURNSU4iXSwic3ViIjoiYWRoYW1qb255YXhzaGlib3lldkBnbWFpbC5jb20iLCJpYXQiOjE3NjI0OTU3MzksImV4cCI6MTc2MjU4MjEzOX0.FnA6Fr22MRPc4Hx6Ej2ZdjNy3HEyeZJ0vD5rKsnOtByxhEszSQcBiuvaPWHI5D4CyD60cLJOPal06CKnxGYwww
 
 {
   "name": "Eshmat3",
@@ -16,7 +16,7 @@ Authorization: Basic YWRoYW1qb255YXhzaGlib3lldkBnbWFpbC5jb206MTIzNDU=
 ### update Admin
 PUT localhost:8080/api/v1/profile/admin/1
 Content-Type: application/json
-Authorization: Basic YWRoYW1qb255YXhzaGlib3lldkBnbWFpbC5jb206MTIzNDU=
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjpbIlJPTEVfVVNFUiIsIlJPTEVfQURNSU4iXSwic3ViIjoiYWRoYW1qb255YXhzaGlib3lldkBnbWFpbC5jb20iLCJpYXQiOjE3NjI0OTU3MzksImV4cCI6MTc2MjU4MjEzOX0.FnA6Fr22MRPc4Hx6Ej2ZdjNy3HEyeZJ0vD5rKsnOtByxhEszSQcBiuvaPWHI5D4CyD60cLJOPal06CKnxGYwww
 
 {
   "roleList": [
@@ -29,7 +29,7 @@ Authorization: Basic YWRoYW1qb255YXhzaGlib3lldkBnbWFpbC5jb206MTIzNDU=
 ### update Own
 PUT localhost:8080/api/v1/profile/own/39
 Content-Type: application/json
-Authorization: Basic YWRoYW1qb255YXhzaGlib3lldkBnbWFpbC5jb206MTIzNDU=
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjpbIlJPTEVfVVNFUiIsIlJPTEVfQURNSU4iXSwic3ViIjoiYWRoYW1qb255YXhzaGlib3lldkBnbWFpbC5jb20iLCJpYXQiOjE3NjI0OTU3MzksImV4cCI6MTc2MjU4MjEzOX0.FnA6Fr22MRPc4Hx6Ej2ZdjNy3HEyeZJ0vD5rKsnOtByxhEszSQcBiuvaPWHI5D4CyD60cLJOPal06CKnxGYwww
 
 {
   "name": "Adhamjon",
@@ -40,17 +40,17 @@ Authorization: Basic YWRoYW1qb255YXhzaGlib3lldkBnbWFpbC5jb206MTIzNDU=
 ### delete
 DELETE localhost:8080/api/v1/profile/1
 Content-Type: application/json
-Authorization: Basic YWRoYW1qb255YXhzaGlib3lldkBnbWFpbC5jb206MTIzNDU=
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjpbIlJPTEVfVVNFUiIsIlJPTEVfQURNSU4iXSwic3ViIjoiYWRoYW1qb255YXhzaGlib3lldkBnbWFpbC5jb20iLCJpYXQiOjE3NjI0OTU3MzksImV4cCI6MTc2MjU4MjEzOX0.FnA6Fr22MRPc4Hx6Ej2ZdjNy3HEyeZJ0vD5rKsnOtByxhEszSQcBiuvaPWHI5D4CyD60cLJOPal06CKnxGYwww
 
 ### Get all Pagination
 GET localhost:8080/api/v1/profile/pagination?size=10
 Content-Type: application/json
-Authorization: Basic YWRoYW1qb255YXhzaGlib3lldkBnbWFpbC5jb206MTIzNDU=
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjpbIlJPTEVfVVNFUiIsIlJPTEVfQURNSU4iXSwic3ViIjoiYWRoYW1qb255YXhzaGlib3lldkBnbWFpbC5jb20iLCJpYXQiOjE3NjI0OTU3MzksImV4cCI6MTc2MjU4MjEzOX0.FnA6Fr22MRPc4Hx6Ej2ZdjNy3HEyeZJ0vD5rKsnOtByxhEszSQcBiuvaPWHI5D4CyD60cLJOPal06CKnxGYwww
 
 ### Filter
 POST localhost:8080/api/v1/profile/filter?size=10
 Content-Type: application/json
-Authorization: Basic YWRoYW1qb255YXhzaGlib3lldkBnbWFpbC5jb206MTIzNDU=
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjpbIlJPTEVfVVNFUiIsIlJPTEVfQURNSU4iXSwic3ViIjoiYWRoYW1qb255YXhzaGlib3lldkBnbWFpbC5jb20iLCJpYXQiOjE3NjI0OTU3MzksImV4cCI6MTc2MjU4MjEzOX0.FnA6Fr22MRPc4Hx6Ej2ZdjNy3HEyeZJ0vD5rKsnOtByxhEszSQcBiuvaPWHI5D4CyD60cLJOPal06CKnxGYwww
 
 {
   "createdDateFrom": "2025-10-20",
@@ -59,16 +59,16 @@ Authorization: Basic YWRoYW1qb255YXhzaGlib3lldkBnbWFpbC5jb206MTIzNDU=
 }
 
 ### Update password
-PUT localhost:8080/api/v1/profile/password/1
+PUT localhost:8080/api/v1/profile/password/39
 Content-Type: application/json
-Authorization: Basic YWRoYW1qb255YXhzaGlib3lldkBnbWFpbC5jb206MTIzNDU=
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjpbIlJPTEVfVVNFUiIsIlJPTEVfQURNSU4iXSwic3ViIjoiYWRoYW1qb255YXhzaGlib3lldkBnbWFpbC5jb20iLCJpYXQiOjE3NjI0OTU3MzksImV4cCI6MTc2MjU4MjEzOX0.FnA6Fr22MRPc4Hx6Ej2ZdjNy3HEyeZJ0vD5rKsnOtByxhEszSQcBiuvaPWHI5D4CyD60cLJOPal06CKnxGYwww
 
 {
-  "currentPassword": "12345",
-  "newPassword": "11111"
+  "currentPassword": "11111",
+  "newPassword": "12345"
 }
 
 ### Get By Id
 GET localhost:8080/api/v1/profile/get/39
 Content-Type: application/json
-Authorization: Basic YWRoYW1qb255YXhzaGlib3lldkBnbWFpbC5jb206MTIzNDU=
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjpbIlJPTEVfVVNFUiIsIlJPTEVfQURNSU4iXSwic3ViIjoiYWRoYW1qb255YXhzaGlib3lldkBnbWFpbC5jb20iLCJpYXQiOjE3NjI0OTU3MzksImV4cCI6MTc2MjU4MjEzOX0.FnA6Fr22MRPc4Hx6Ej2ZdjNy3HEyeZJ0vD5rKsnOtByxhEszSQcBiuvaPWHI5D4CyD60cLJOPal06CKnxGYwww

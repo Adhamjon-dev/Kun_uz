@@ -3,6 +3,8 @@ package dasturlash.uz.config;
 import dasturlash.uz.enums.ProfileRoleEnum;
 import dasturlash.uz.enums.ProfileStatus;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,8 +13,11 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
+@Getter
+@Setter
 @AllArgsConstructor
 public class CustomUserDetails implements UserDetails {
+    private Integer id;
     private String name;
     private String surname;
     private String username;

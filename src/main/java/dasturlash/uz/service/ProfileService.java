@@ -92,7 +92,7 @@ public class ProfileService {
         if (!entity.getUsername().equals(userDetails.getUsername())) {
             throw new AppBadException("Username not match");
         }
-        if (bCryptPasswordEncoder.matches(entity.getPassword(), dto.getCurrentPassword())) {
+        if (bCryptPasswordEncoder.matches(dto.getCurrentPassword(), entity.getPassword())) {
             entity.setPassword(bCryptPasswordEncoder.encode(dto.getNewPassword()));
             profileRepository.save(entity);
             return Boolean.TRUE;
