@@ -8,6 +8,7 @@ import dasturlash.uz.enums.ProfileStatus;
 import dasturlash.uz.exp.AppBadException;
 import dasturlash.uz.repository.CustomProfileRepository;
 import dasturlash.uz.repository.ProfileRepository;
+import dasturlash.uz.util.SpringSecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -63,13 +64,11 @@ public class ProfileService {
         return Boolean.TRUE;
     }
 
-    public Boolean updateOwn(Integer profileId, UpdateProfileOwnDTO newProfile, UserDetails userDetails) {
+    public Boolean updateOwn(UpdateProfileOwnDTO newProfile) {
+        Integer profileId = SpringSecurityUtil.getCurrentUserId();
         Optional<ProfileEntity> optional = profileRepository.findByIdAndVisibleTrue(profileId);
         if (optional.isEmpty()) {
             throw new AppBadException("User not found");
-        }
-        if (!optional.get().getUsername().equals(userDetails.getUsername())) {
-            throw new AppBadException("Username not match");
         }
         Optional<ProfileEntity> opt = profileRepository.findByUsernameAndVisibleTrueAndIdNot(newProfile.getUsername(), profileId);
         if (opt.isPresent()) {
@@ -83,15 +82,13 @@ public class ProfileService {
         return Boolean.TRUE;
     }
 
-    public Boolean updatePassword(Integer profileId, ProfileUpdatePasswordDTO dto, UserDetails userDetails) {
+    public Boolean updatePassword(ProfileUpdatePasswordDTO dto) {
+        Integer profileId = SpringSecurityUtil.getCurrentUserId();
         Optional<ProfileEntity> optional = profileRepository.findByIdAndVisibleTrue(profileId);
         if (optional.isEmpty()) {
             throw new AppBadException("User not found");
         }
         ProfileEntity entity = optional.get();
-        if (!entity.getUsername().equals(userDetails.getUsername())) {
-            throw new AppBadException("Username not match");
-        }
         if (bCryptPasswordEncoder.matches(dto.getCurrentPassword(), entity.getPassword())) {
             entity.setPassword(bCryptPasswordEncoder.encode(dto.getNewPassword()));
             profileRepository.save(entity);

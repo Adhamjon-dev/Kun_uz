@@ -1,14 +1,11 @@
 package dasturlash.uz.controller;
 
 import dasturlash.uz.dto.SmsHistoryDTO;
-import dasturlash.uz.dto.auth.JwtDTO;
-import dasturlash.uz.enums.ProfileRoleEnum;
-import dasturlash.uz.exp.AppAccessDeniedException;
 import dasturlash.uz.service.SmsHistoryService;
-import dasturlash.uz.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -20,16 +17,19 @@ public class SmsHistoryController {
     @Autowired
     private SmsHistoryService smsHistoryService;
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/phone")
     public ResponseEntity<List<SmsHistoryDTO>> getByPhone(@RequestParam("phone") String  phone) {
         return ResponseEntity.ok(smsHistoryService.getSmsDtoByPhone(phone));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/date")
     public ResponseEntity<List<SmsHistoryDTO>> getByDate(@RequestParam("date") LocalDate date) {
         return ResponseEntity.ok(smsHistoryService.getSmsDtoByDate(date));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/pagination")
     public ResponseEntity<PageImpl<SmsHistoryDTO>> pagination(@RequestParam(value = "page", defaultValue = "1") int page,
                                                               @RequestParam(value = "size", defaultValue = "5") int size) {

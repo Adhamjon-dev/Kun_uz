@@ -4,10 +4,10 @@ import dasturlash.uz.service.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -17,6 +17,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity(prePostEnabled = true)
 public class SpringSecurityConfig {
     @Autowired
     private CustomUserDetailsService customUserDetailsService;
@@ -47,24 +48,6 @@ public class SpringSecurityConfig {
         http.authorizeHttpRequests(authorizationManagerRequestMatcherRegistry -> {
             authorizationManagerRequestMatcherRegistry
                     .requestMatchers(AUTH_WHITELIST).permitAll()
-                    .requestMatchers("/api/v1/region",
-                            "/api/v1/region/",
-                            "/api/v1/region/*",
-                            "/api/v1/category",
-                            "/api/v1/category/",
-                            "/api/v1/category/*",
-                            "/api/v1/section",
-                            "/api/v1/section/",
-                            "/api/v1/section/*",
-                            "/api/v1/sms/pagination",
-                            "/api/v1/profile",
-                            "/api/v1/profile/admin/*",
-                            "/api/v1/profile/pagination",
-                            "/api/v1/profile/filter",
-                            "/api/v1/profile/get/*"
-                            ).hasRole("ADMIN")
-                    .requestMatchers(HttpMethod.DELETE, "/api/v1/profile/*").hasRole("ADMIN")
-                    .requestMatchers("/api/v1/profile/own/*", "/api/v1/profile/password/*").hasRole("USER")
                     .anyRequest()
                     .authenticated();
         }).addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
