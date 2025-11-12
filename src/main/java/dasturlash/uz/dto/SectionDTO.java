@@ -27,5 +27,5 @@ public class SectionDTO {
 
     private Boolean visible;
     private LocalDateTime createdDate;
-    private Integer imageId;
+    private String imageId;
 }

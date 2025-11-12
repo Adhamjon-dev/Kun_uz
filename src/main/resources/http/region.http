@@ -4,11 +4,11 @@ Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjpbIlJPTEVfVVNFUiIsIlJPTEVfQURNSU4iXSwic3ViIjoiYWRoYW1qb255YXhzaGlib3lldkBnbWFpbC5jb20iLCJpYXQiOjE3NjI3NTYwNTksImV4cCI6MTc2Mjg0MjQ1OX0.-n8cqxeqH7OwUySxorqqBzg4s1-p3d9rwIty9h9AqH4aNZ4aueUELjP1t6qpwn60fwOvau4jcPSp3s7MBbNDHQ
 
 {
-  "orderNumber": 2,
-  "nameUz": "Toshkent 2",
-  "nameRu": "Ташкент 2",
+  "orderNumber": 1,
+  "nameUz": "Toshkent 1",
+  "nameRu": "Ташкент 1",
   "nameEn": "Tashkent 2",
-  "regionKey": "tashkent2"
+  "regionKey": "tashkent1"
 }
 
 ### Get all region

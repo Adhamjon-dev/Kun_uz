@@ -10,8 +10,9 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface ArticleSectionRepository extends CrudRepository<ArticleSectionEntity, Integer> {
-    List<Integer> getSectionIdsByArticleId(String articleId);
+public interface ArticleSectionRepository extends CrudRepository<ArticleSectionEntity, String> {
+    @Query("select sectionId from ArticleSectionEntity where articleId =?1")
+    List<Integer> getSectionIdListByArticleId(String articleId);
 
     @Transactional
     @Modifying

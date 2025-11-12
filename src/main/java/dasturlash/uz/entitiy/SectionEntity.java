@@ -39,8 +39,8 @@ public class SectionEntity {
     private LocalDateTime createdDate;
 
     @Column(name = "image_id")
-    private Integer imageId;
+    private String imageId;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "image_id", insertable = false, updatable = false)
-    private ImageEntity image;
+    private AttachEntity image;
 }

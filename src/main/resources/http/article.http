@@ -1,39 +1,64 @@
 ### Create article
 POST localhost:8080/api/v1/article
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjpbIlJPTEVfVVNFUiIsIlJPTEVfQURNSU4iXSwic3ViIjoiYWRoYW1qb255YXhzaGlib3lldkBnbWFpbC5jb20iLCJpYXQiOjE3NjI3NTYwNTksImV4cCI6MTc2Mjg0MjQ1OX0.-n8cqxeqH7OwUySxorqqBzg4s1-p3d9rwIty9h9AqH4aNZ4aueUELjP1t6qpwn60fwOvau4jcPSp3s7MBbNDHQ
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjpbIlJPTEVfVVNFUiIsIlJPTEVfTU9ERVJBVE9SIl0sInN1YiI6ImFkaGFtam9ueWF4c2hpYm92QGdtYWlsLmNvbSIsImlhdCI6MTc2Mjg3NzQ0NCwiZXhwIjoxNzYyOTYzODQ0fQ.jD4LHE1LmqI01KEsCMZuSxfSWVzUg-0UzwsBVzuuJSfRamT1CIhjvCBhg53bf2SE0kHW28WcbmVTtjTrNlY3SQ
 
 {
-  "title": "gh",
+  "title": "ghmbj111h",
   "content": "ihjkml",
-  "description": "uhnjmk",
-  "imageId": 1,
+  "description": "uhnjjvmk",
+  "imageId": "1",
   "readTime": 4,
   "regionId": 1,
-  "categoryIdList": [1],
-  "sectionIdList": [1]
+  "categoryList": [
+    {
+      "id": 1
+    }
+  ],
+  "sectionList": [
+    {
+      "id": 1
+    }
+  ]
 }
 
 ### Update article
-PUT localhost:8080/api/v1/article/1
+PUT localhost:8080/api/v1/article/3fa7ba88-fad8-4a73-a2fc-d1b1678c7b9e
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjpbIlJPTEVfVVNFUiIsIlJPTEVfQURNSU4iXSwic3ViIjoiYWRoYW1qb255YXhzaGlib3lldkBnbWFpbC5jb20iLCJpYXQiOjE3NjI3NTYwNTksImV4cCI6MTc2Mjg0MjQ1OX0.-n8cqxeqH7OwUySxorqqBzg4s1-p3d9rwIty9h9AqH4aNZ4aueUELjP1t6qpwn60fwOvau4jcPSp3s7MBbNDHQ
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjpbIlJPTEVfVVNFUiIsIlJPTEVfTU9ERVJBVE9SIl0sInN1YiI6ImFkaGFtam9ueWF4c2hpYm92QGdtYWlsLmNvbSIsImlhdCI6MTc2Mjg3NzQ0NCwiZXhwIjoxNzYyOTYzODQ0fQ.jD4LHE1LmqI01KEsCMZuSxfSWVzUg-0UzwsBVzuuJSfRamT1CIhjvCBhg53bf2SE0kHW28WcbmVTtjTrNlY3SQ
 
 {
   "title": "gh",
   "content": "ihjkml",
   "description": "uhnjmk",
-  "imageId": 1,
   "readTime": 4,
   "regionId": 1,
-  "categoryIdList": [1],
-  "sectionIdList": [1]
+  "categoryList": [
+    {
+      "id": 1
+    }
+  ],
+  "sectionList": [
+    {
+      "id": 1
+    }
+  ]
 }
 
 ### Delete article
-DELETE localhost:8080/api/v1/article/1
+DELETE localhost:8080/api/v1/article/3fa7ba88-fad8-4a73-a2fc-d1b1678c7b9e
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjpbIlJPTEVfVVNFUiIsIlJPTEVfQURNSU4iXSwic3ViIjoiYWRoYW1qb255YXhzaGlib3lldkBnbWFpbC5jb20iLCJpYXQiOjE3NjI3NTYwNTksImV4cCI6MTc2Mjg0MjQ1OX0.-n8cqxeqH7OwUySxorqqBzg4s1-p3d9rwIty9h9AqH4aNZ4aueUELjP1t6qpwn60fwOvau4jcPSp3s7MBbNDHQ
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjpbIlJPTEVfVVNFUiIsIlJPTEVfTU9ERVJBVE9SIl0sInN1YiI6ImFkaGFtam9ueWF4c2hpYm92QGdtYWlsLmNvbSIsImlhdCI6MTc2Mjg3NzQ0NCwiZXhwIjoxNzYyOTYzODQ0fQ.jD4LHE1LmqI01KEsCMZuSxfSWVzUg-0UzwsBVzuuJSfRamT1CIhjvCBhg53bf2SE0kHW28WcbmVTtjTrNlY3SQ
 
 ### change status
-PUT localhost:8080/api/v1/article/change?id=1&status=NOT_PUBLISHED
+PUT localhost:8080/api/v1/article/3fa7ba88-fad8-4a73-a2fc-d1b1678c7b9e/status
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjpbIlJPTEVfVVNFUiIsIlJPTEVfUFVCTElTSCJdLCJzdWIiOiJmYWxzZSIsImlhdCI6MTc2MjkyNDg5NywiZXhwIjoxNzYzMDExMjk3fQ.WcVRKe5LKRNEXG29WGGOMfiXPcZgFwxH7tJFAUAu1LVOCU4A138X_8npAOgatChV89Gz6y6AtB1XtBhB2xPcRw
+
+{
+  "status": "PUBLISHED"
+}
+
+### get article By section Id
+GET localhost:8080/api/v1/article/section/1
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjpbIlJPTEVfVVNFUiIsIlJPTEVfTU9ERVJBVE9SIl0sInN1YiI6ImFkaGFtam9ueWF4c2hpYm92QGdtYWlsLmNvbSIsImlhdCI6MTc2Mjg3NzQ0NCwiZXhwIjoxNzYyOTYzODQ0fQ.jD4LHE1LmqI01KEsCMZuSxfSWVzUg-0UzwsBVzuuJSfRamT1CIhjvCBhg53bf2SE0kHW28WcbmVTtjTrNlY3SQ

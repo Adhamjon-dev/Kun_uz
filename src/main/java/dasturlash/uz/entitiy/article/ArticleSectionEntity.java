@@ -10,18 +10,18 @@ import lombok.Setter;
 @Entity
 public class ArticleSectionEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-
-    @Column(name = "article_id")
-    private String articleId;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "article_id", insertable = false, updatable = false)
-    private ArticleEntity article;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
 
     @Column(name = "section_id")
     private Integer sectionId;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "section_id", insertable = false, updatable = false)
     private SectionEntity section;
+
+    @Column(name = "article_id")
+    private String articleId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "article_id", insertable = false, updatable = false)
+    private ArticleEntity article;
 }
