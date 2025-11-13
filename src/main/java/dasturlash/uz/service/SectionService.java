@@ -1,5 +1,6 @@
 package dasturlash.uz.service;
 
+import dasturlash.uz.dto.CategoryDTO;
 import dasturlash.uz.dto.SectionDTO;
 import dasturlash.uz.entitiy.SectionEntity;
 import dasturlash.uz.enums.AppLanguageEnum;
@@ -108,5 +109,20 @@ public class SectionService {
         return sectionRepository.findByIdAndVisibleTrue(id).orElseThrow(() -> {
             throw new AppBadException("Item not found");
         });
+    }
+
+    public List<SectionDTO> getSectionListByArticleId(String articleId, AppLanguageEnum lang) {
+        List<LanguageMapper> mapperList = sectionRepository.getListByArticleIdAndLang(articleId, lang.name());
+        List<SectionDTO> dtoList = new LinkedList<>();
+        mapperList.forEach(mapper -> {
+            SectionDTO dto = new SectionDTO();
+            dto.setId(mapper.getId());
+            dto.setOrderNumber(mapper.getOrderNumber());
+            dto.setSectionKey(mapper.getKey());
+            dto.setName(mapper.getName());
+
+            dtoList.add(dto);
+        });
+        return dtoList;
     }
 }

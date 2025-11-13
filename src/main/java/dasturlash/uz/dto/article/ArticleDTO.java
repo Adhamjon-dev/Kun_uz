@@ -3,7 +3,9 @@ package dasturlash.uz.dto.article;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import dasturlash.uz.dto.AttachDTO;
 import dasturlash.uz.dto.CategoryDTO;
+import dasturlash.uz.dto.RegionDTO;
 import dasturlash.uz.dto.SectionDTO;
+import dasturlash.uz.dto.profile.ProfileDTO;
 import dasturlash.uz.enums.ArticleStatus;
 import lombok.Getter;
 import lombok.Setter;
@@ -36,5 +38,6 @@ public class ArticleDTO {
     private List<CategoryDTO> categoryList;
     private List<SectionDTO> sectionList;
 
-    private String categoryName;
+    private RegionDTO region;
+    private ProfileDTO moderator;
 }

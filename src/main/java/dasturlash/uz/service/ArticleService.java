@@ -1,8 +1,10 @@
 package dasturlash.uz.service;
 
+import dasturlash.uz.dto.RegionDTO;
 import dasturlash.uz.dto.article.ArticleCreateDTO;
 import dasturlash.uz.dto.article.ArticleDTO;
 import dasturlash.uz.entitiy.article.ArticleEntity;
+import dasturlash.uz.enums.AppLanguageEnum;
 import dasturlash.uz.enums.ArticleStatus;
 import dasturlash.uz.enums.ProfileRoleEnum;
 import dasturlash.uz.exp.AppBadException;
@@ -10,6 +12,9 @@ import dasturlash.uz.mapper.ArticleShortInfo;
 import dasturlash.uz.repository.ArticleRepository;
 import dasturlash.uz.util.SpringSecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -25,6 +30,14 @@ public class ArticleService {
     ArticleSectionService articleSectionService;
     @Autowired
     ArticleCategoryService articleCategoryService;
+    @Autowired
+    RegionService  regionService;
+    @Autowired
+    CategoryService categoryService;
+    @Autowired
+    SectionService sectionService;
+    @Autowired
+    ProfileService profileService;
 
     public ArticleDTO create(ArticleCreateDTO createDTO) {
         ArticleEntity entity = new ArticleEntity();
@@ -70,16 +83,93 @@ public class ArticleService {
     }
 
     public String changeStatus(String articleId, ArticleStatus status) {
-        int effectedRows = articleRepository.changeStatus(articleId, status);
-        if (effectedRows > 0) {
-            return "Article status change";
-        } else {
-            return "Something went wrong";
-        }
+//        int effectedRows = articleRepository.changeStatus(articleId, status);
+//        if (effectedRows > 0) {
+//
+//            return "Article status change";
+//        } else {
+//            return "Something went wrong";
+//        }
+
+        ArticleEntity entity = get(articleId);
+        entity.setStatus(status);
+        entity.setPublishedDate(LocalDateTime.now());
+        entity.setPublisherId(SpringSecurityUtil.getCurrentUserId());
+        articleRepository.save(entity);
+        return "Article status change";
     }
 
-    public List<ArticleDTO> getBySectionId(Integer sectionId, int limit) {
+    public PageImpl<ArticleDTO> getBySectionId(Integer sectionId, int limit, int page, int size) {
         List<ArticleShortInfo> resultList = articleRepository.getBySectionId(sectionId, limit);
+
+        return getPage(resultList, page, size);
+    }
+
+    public PageImpl<ArticleDTO> getLas12PublishedArticle(List<String> exceptIdList, int page, int size) {
+        List<ArticleShortInfo> resultList = articleRepository.getPublishedArticleListExceptIds(exceptIdList, 12);
+
+        return getPage(resultList, page, size);
+    }
+
+    public PageImpl<ArticleDTO> getLastCategoryId(Integer categoryId, int limit, int page, int size) {
+        List<ArticleShortInfo> list = articleRepository.getByCategoryId(categoryId, limit);
+
+        return getPage(list, page, size);
+    }
+
+    private PageImpl<ArticleDTO> getPage(List<ArticleShortInfo> list, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        int start = page * size;
+        int end = Math.min(start + pageable.getPageSize(), list.size());
+
+        List<ArticleShortInfo> responseList = new LinkedList<>();
+        if (end > start) {
+            responseList = list.subList(start, end);
+        }
+
+        List<ArticleDTO> content = new LinkedList<>();
+        responseList.forEach(mapper -> content.add(toDTO(mapper)));
+
+        return new PageImpl<>(content, pageable, list.size());
+    }
+
+    public PageImpl<ArticleDTO> getLastRegionId(Integer regionId, int limit, int page, int size) {
+        List<ArticleShortInfo> list = articleRepository.getByRegionId(regionId, limit);
+
+        return getPage(list, page, size);
+    }
+
+    //  first way
+    public ArticleDTO getByIdAndLang(String id, AppLanguageEnum lang) {
+        Optional<ArticleEntity> articleOptional = articleRepository.findById(id);
+        if (articleOptional.isEmpty()) {
+            throw new AppBadException("Article Not Found");
+        }
+        ArticleEntity article = articleOptional.get();
+
+        ArticleDTO result = new ArticleDTO();
+        result.setId(article.getId());
+        result.setTitle(article.getTitle());
+        result.setContent(article.getContent());
+        result.setDescription(article.getDescription());
+        result.setSharedCount(article.getSharedCount());
+        result.setViewCount(article.getViewCount());
+        result.setPublishedDate(article.getPublishedDate());
+        // region(key,name)
+        RegionDTO region = regionService.getByIdAndLang(article.getRegionId(), lang);
+        result.setRegion(region);
+        // categoryList[{key,name},{}]
+        result.setCategoryList(categoryService.getCategoryListByArticleId(article.getId(), lang));
+        // sectionList[{id,name},{id,name}]
+        result.setSectionList(sectionService.getSectionListByArticleId(article.getId(), lang));
+        // moderator -
+        result.setModerator(profileService.getById(article.getModeratorId()));
+
+        return result;
+    }
+
+    public List<ArticleDTO> getByLast4ArticleBySectionId(Integer sectionId, String exceptArticleId) {
+        List<ArticleShortInfo> resultList = articleRepository.getBySectionIdAndExceptId(exceptArticleId, sectionId);
         List<ArticleDTO> responseList = new LinkedList<>();
         resultList.forEach(mapper -> responseList.add(toDTO(mapper)));
         return responseList;
@@ -117,7 +207,6 @@ public class ArticleService {
         dto.setDescription(mapper.getDescription());
 //        dto.setImage(attachService.openDTO(mapper.getId()));
         dto.setPublishedDate(mapper.getPublishedDate());
-//        dto.setCategoryName(mapper.getCategoryName());
         return dto;
     }
 

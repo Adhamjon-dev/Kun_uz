@@ -2,6 +2,7 @@ package dasturlash.uz.repository;
 
 import dasturlash.uz.entitiy.CategoryEntity;
 import dasturlash.uz.entitiy.SectionEntity;
+import dasturlash.uz.enums.AppLanguageEnum;
 import dasturlash.uz.mapper.LanguageMapper;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.Modifying;
@@ -41,4 +42,17 @@ public interface SectionRepository extends CrudRepository<SectionEntity, Integer
 
     @Query("from SectionEntity order by orderNumber")
     Iterable<SectionEntity> findAllOrder();
+
+    @Query("SELECT s.id AS id, " +
+            "CASE :lang " +
+            "   WHEN 'UZ' THEN s.nameUz " +
+            "   WHEN 'RU' THEN s.nameRu " +
+            "   WHEN 'EN' THEN s.nameEn " +
+            "END AS name, " +
+            "s.orderNumber AS orderNumber, " +
+            "s.sectionKey AS key " +
+            "FROM SectionEntity s " +
+            "inner join ArticleSectionEntity ac on ac.sectionId = s.id " +
+            "WHERE s.visible = true and ac.articleId = :articleId order by orderNumber asc")
+    List<LanguageMapper> getListByArticleIdAndLang(@Param("articleId") String articleId, @Param("lang") String lang);
 }

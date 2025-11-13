@@ -40,4 +40,16 @@ public interface RegionRepository extends CrudRepository<RegionEntity, Integer> 
 
     @Query("from RegionEntity order by orderNumber")
     Iterable<RegionEntity> findAllOrder();
+
+    @Query("SELECT c.id AS id, " +
+            "CASE :lang " +
+            "   WHEN 'UZ' THEN c.nameUz " +
+            "   WHEN 'RU' THEN c.nameRu " +
+            "   WHEN 'EN' THEN c.nameEn " +
+            "END AS name, " +
+            "c.orderNumber AS orderNumber, " +
+            "c.regionKey AS regionKey " +
+            "FROM RegionEntity c " +
+            "WHERE c.visible = true and id = :id")
+    LanguageMapper getByIdAndLang(@Param("id") Integer id, @Param("lang") String lang);
 }

@@ -158,4 +158,13 @@ public class ProfileService {
     public Optional<ProfileEntity> getProfileById(Integer id) {
         return profileRepository.findByIdAndStatusAndVisibleTrue(id, ProfileStatus.NOT_ACTIVE);
     }
+
+    public ProfileDTO getById(Integer id) {
+        Optional<ProfileEntity> optional =  profileRepository.findById(id);
+        if (optional.isEmpty()) {
+            throw new AppBadException("Item not found");
+        }
+        ProfileEntity entity = optional.get();
+        return toDto(entity);
+    }
 }

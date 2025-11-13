@@ -93,4 +93,19 @@ public class CategoryService {
             throw new AppBadException("Item not found");
         });
     }
+
+    public List<CategoryDTO> getCategoryListByArticleId(String articleId, AppLanguageEnum lang) {
+        List<LanguageMapper> mapperList = categoryRepository.getListByArticleIdAndLang(articleId, lang.name());
+        List<CategoryDTO> dtoList = new LinkedList<>();
+        mapperList.forEach(mapper -> {
+            CategoryDTO dto = new CategoryDTO();
+            dto.setId(mapper.getId());
+            dto.setOrderNumber(mapper.getOrderNumber());
+            dto.setCategoryKey(mapper.getKey());
+            dto.setName(mapper.getName());
+
+            dtoList.add(dto);
+        });
+        return dtoList;
+    }
 }

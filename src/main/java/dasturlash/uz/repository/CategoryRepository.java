@@ -1,6 +1,7 @@
 package dasturlash.uz.repository;
 
 import dasturlash.uz.entitiy.CategoryEntity;
+import dasturlash.uz.enums.AppLanguageEnum;
 import dasturlash.uz.mapper.LanguageMapper;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.Modifying;
@@ -40,4 +41,17 @@ public interface CategoryRepository extends CrudRepository<CategoryEntity, Integ
 
     @Query("from CategoryEntity order by orderNumber")
     Iterable<CategoryEntity> findAllOrder();
+
+    @Query("SELECT c.id AS id, " +
+            "CASE :lang " +
+            "   WHEN 'UZ' THEN c.nameUz " +
+            "   WHEN 'RU' THEN c.nameRu " +
+            "   WHEN 'EN' THEN c.nameEn " +
+            "END AS name, " +
+            "c.orderNumber AS orderNumber, " +
+            "c.categoryKey AS key " +
+            "FROM CategoryEntity c " +
+            "inner join ArticleCategoryEntity ac on ac.categoryId = c.id " +
+            "WHERE c.visible = true and ac.articleId = :articleId order by orderNumber asc")
+    List<LanguageMapper> getListByArticleIdAndLang(@Param("articleId") String articleId, @Param("lang") String lang);
 }

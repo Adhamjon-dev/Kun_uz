@@ -94,4 +94,15 @@ public class RegionService {
             throw new AppBadException("Item not found");
         });
     }
+
+    public RegionDTO getByIdAndLang(Integer id, AppLanguageEnum lang) {
+        LanguageMapper mapper = regionRepository.getByIdAndLang(id, lang.name());
+        RegionDTO dto = new RegionDTO();
+        dto.setId(mapper.getId());
+        dto.setName(mapper.getName());
+        dto.setOrderNumber(mapper.getOrderNumber());
+        dto.setRegionKey(mapper.getKey());
+        return dto;
+    }
+
 }

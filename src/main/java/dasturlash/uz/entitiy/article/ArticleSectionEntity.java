@@ -8,6 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
+@Table(name = "article_section")
 public class ArticleSectionEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

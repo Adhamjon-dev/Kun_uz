@@ -3,9 +3,11 @@ package dasturlash.uz.controller;
 import dasturlash.uz.dto.article.ArticleChangeStatusDTO;
 import dasturlash.uz.dto.article.ArticleCreateDTO;
 import dasturlash.uz.dto.article.ArticleDTO;
+import dasturlash.uz.enums.AppLanguageEnum;
 import dasturlash.uz.service.ArticleService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -31,7 +33,7 @@ public class ArticleController {
         return ResponseEntity.ok(articleService.update(id, dto));
     }
 
-    @PreAuthorize("hasRole('MODERATOR')")
+    @PreAuthorize("hasAnyRole('MODERATOR', 'ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<String> delete(@PathVariable String id) {
         return ResponseEntity.ok(articleService.delete(id));
@@ -45,8 +47,45 @@ public class ArticleController {
     }
 
     @GetMapping("/section/{sectionId}")
-    public ResponseEntity<List<ArticleDTO>> getArticleBySectionId(@PathVariable("sectionId") Integer sectionId,
-                                                         @RequestParam(value = "limit", defaultValue = "1") int limit) {
-        return ResponseEntity.ok(articleService.getBySectionId(sectionId, limit));
+    public ResponseEntity<PageImpl<ArticleDTO>> getArticleBySectionId(@PathVariable("sectionId") Integer sectionId,
+                                                         @RequestParam(value = "limit", defaultValue = "1") int limit,
+                                                                      @RequestParam(value = "page", defaultValue = "1") int page,
+                                                                      @RequestParam(value = "size", defaultValue = "10") int size) {
+        return ResponseEntity.ok(articleService.getBySectionId(sectionId, limit, page - 1, size));
+    }
+
+    @GetMapping("/region/{regionId}")
+    public ResponseEntity<PageImpl<ArticleDTO>> getArticleByRegionId(@PathVariable("regionId") Integer regionId,
+                                                                           @RequestParam(value = "limit", defaultValue = "1") int limit,
+                                                                           @RequestParam(value = "page", defaultValue = "1") int page,
+                                                                           @RequestParam(value = "size", defaultValue = "10") int size) {
+        return ResponseEntity.ok(articleService.getLastRegionId(regionId, limit, page - 1, size));
+    }
+
+    @GetMapping("/get/{articleId}")
+    public ResponseEntity<ArticleDTO> getByIdAndLang(@PathVariable("articleId") String articleId,
+                                                               @RequestHeader(name = "Accept-Language", defaultValue = "uz") AppLanguageEnum language) {
+        return ResponseEntity.ok(articleService.getByIdAndLang(articleId, language));
+    }
+
+    @PostMapping("/last12")
+    public ResponseEntity<PageImpl<ArticleDTO>> last12ArticleExceptGivenIdList(@RequestBody List<String> exceptIdList,
+                                                                           @RequestParam(value = "page", defaultValue = "1") int page,
+                                                                           @RequestParam(value = "size", defaultValue = "10") int size) {
+        return ResponseEntity.ok(articleService.getLas12PublishedArticle(exceptIdList, page - 1, size));
+    }
+
+    @GetMapping("/category/{categoryId}")
+    public ResponseEntity<PageImpl<ArticleDTO>> getArticleByCategoryId(@PathVariable("categoryId") Integer categoryId,
+                                                                  @RequestParam(value = "limit", defaultValue = "5") int limit,
+                                                                   @RequestParam(value = "page", defaultValue = "1") int page,
+                                                                   @RequestParam(value = "size", defaultValue = "10") int size) {
+        return ResponseEntity.ok(articleService.getLastCategoryId(categoryId, limit, page - 1, size));
+    }
+
+    @PostMapping("/section/{sectionId}/last4")
+    public ResponseEntity<List<ArticleDTO>> last4BySectionId(@PathVariable("sectionId") Integer sectionId,
+                                                             @RequestParam("exceptArticleId") String exceptArticleId) {
+        return ResponseEntity.ok(articleService.getByLast4ArticleBySectionId(sectionId, exceptArticleId));
     }
 }

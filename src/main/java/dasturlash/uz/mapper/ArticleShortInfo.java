@@ -12,6 +12,4 @@ public interface ArticleShortInfo {
     String getImageId();
 
     LocalDateTime getPublishedDate();
-
-//    String getCategoryName();
 }

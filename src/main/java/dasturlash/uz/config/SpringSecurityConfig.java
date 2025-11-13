@@ -28,7 +28,12 @@ public class SpringSecurityConfig {
 
     public static final String[] AUTH_WHITELIST = {
             "/api/v1/auth/**",
-            "/api/v1/*/lang"
+            "/api/v1/*/lang",
+            "/api/v1/article/section/**",
+            "/api/v1/article/category/*",
+            "/api/v1/article/region/*",
+            "/api/v1/article/last12",
+            "/api/v1/article/get/*"
     };
 
     @Bean

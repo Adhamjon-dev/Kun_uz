@@ -1,12 +1,12 @@
 ### Create article
 POST localhost:8080/api/v1/article
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjpbIlJPTEVfVVNFUiIsIlJPTEVfTU9ERVJBVE9SIl0sInN1YiI6ImFkaGFtam9ueWF4c2hpYm92QGdtYWlsLmNvbSIsImlhdCI6MTc2Mjg3NzQ0NCwiZXhwIjoxNzYyOTYzODQ0fQ.jD4LHE1LmqI01KEsCMZuSxfSWVzUg-0UzwsBVzuuJSfRamT1CIhjvCBhg53bf2SE0kHW28WcbmVTtjTrNlY3SQ
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjpbIlJPTEVfVVNFUiIsIlJPTEVfTU9ERVJBVE9SIl0sInN1YiI6ImFkaGFtam9ueWF4c2hpYm92QGdtYWlsLmNvbSIsImlhdCI6MTc2MzA1MTU5MywiZXhwIjoxNzYzMTM3OTkzfQ.EepbcIwAJSCO8T8EpB8J3V2jUJkNiPUA88jTnbFU8LT_BMqHeig0bM7K9QDa1YD3gqYP5CNllnkAd7C4UDX16w
 
 {
-  "title": "ghmbj111h",
+  "title": "aaaaaaaa",
   "content": "ihjkml",
-  "description": "uhnjjvmk",
+  "description": "qqqqqq",
   "imageId": "1",
   "readTime": 4,
   "regionId": 1,
@@ -18,6 +18,9 @@ Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjpbIlJPTEVfVVNFUiIsIlJPTEVfT
   "sectionList": [
     {
       "id": 1
+    },
+    {
+      "id": 2
     }
   ]
 }
@@ -61,4 +64,23 @@ Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjpbIlJPTEVfVVNFUiIsIlJPTEVfU
 
 ### get article By section Id
 GET localhost:8080/api/v1/article/section/1
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjpbIlJPTEVfVVNFUiIsIlJPTEVfTU9ERVJBVE9SIl0sInN1YiI6ImFkaGFtam9ueWF4c2hpYm92QGdtYWlsLmNvbSIsImlhdCI6MTc2Mjg3NzQ0NCwiZXhwIjoxNzYyOTYzODQ0fQ.jD4LHE1LmqI01KEsCMZuSxfSWVzUg-0UzwsBVzuuJSfRamT1CIhjvCBhg53bf2SE0kHW28WcbmVTtjTrNlY3SQ
+
+### get article By category Id
+GET localhost:8080/api/v1/article/category/1
+
+### get article By region Id
+GET localhost:8080/api/v1/article/region/1
+
+### get article Id
+GET localhost:8080/api/v1/article/get/3fa7ba88-fad8-4a73-a2fc-d1b1678c7b9e
+Accept-Language: EN
+
+### get last 12
+POST localhost:8080/api/v1/article/last12
+Content-Type: application/json
+
+[
+]
+
+### get by section Id and except article Id
+POST localhost:8080/api/v1/article/section/2/last4?exceptArticleId=3fa7ba88-fad8-4a73-a2fc-d1b1678c7b9e
