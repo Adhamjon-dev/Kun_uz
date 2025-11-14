@@ -62,7 +62,7 @@ public class ArticleEntity {
     private Integer readTime; // in second
 
     @Column(name = "view_count")
-    private Integer viewCount; // in second
+    private Integer viewCount;
 
     @Column(name = "created_date")
     private LocalDateTime createdDate;

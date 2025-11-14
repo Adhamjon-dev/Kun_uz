@@ -88,4 +88,27 @@ public class ArticleController {
                                                              @RequestParam("exceptArticleId") String exceptArticleId) {
         return ResponseEntity.ok(articleService.getByLast4ArticleBySectionId(sectionId, exceptArticleId));
     }
+
+    @PostMapping("/view_top4")
+    public ResponseEntity<List<ArticleDTO>> getViewTop4(@RequestParam("exceptArticleId") String exceptArticleId) {
+        return ResponseEntity.ok(articleService.getViewTop4ArticleByArticleId(exceptArticleId));
+    }
+
+    @GetMapping("/increase/view/{articleId}")
+    public ResponseEntity<Integer> increaseViewCount(@PathVariable("articleId") String articleId) {
+        return ResponseEntity.ok(articleService.increaseViewCountByArticleId(articleId));
+    }
+
+    @GetMapping("/increase/shared/{articleId}")
+    public ResponseEntity<Long> increaseSharedCount(@PathVariable("articleId") String articleId) {
+        return ResponseEntity.ok(articleService.increaseSharedCountByArticleId(articleId));
+    }
+
+    @GetMapping("/tagName/{tagName}")
+    public ResponseEntity<PageImpl<ArticleDTO>> getArticleByTagName(@PathVariable("tagName") String tagName,
+                                                                       @RequestParam(value = "limit", defaultValue = "5") int limit,
+                                                                       @RequestParam(value = "page", defaultValue = "1") int page,
+                                                                       @RequestParam(value = "size", defaultValue = "10") int size) {
+        return ResponseEntity.ok(articleService.getLastByTagName(tagName, limit, page - 1, size));
+    }
 }

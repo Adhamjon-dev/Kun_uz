@@ -2,6 +2,7 @@ package dasturlash.uz.dto.article;
 
 import dasturlash.uz.dto.CategoryDTO;
 import dasturlash.uz.dto.SectionDTO;
+import dasturlash.uz.dto.TagDTO;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -29,4 +30,6 @@ public class ArticleCreateDTO {
     private List<CategoryDTO> categoryList; // [ {id:1}, {id:2},{id:3},{id:4}]
     @NotEmpty(message = "SectionList required")
     private List<SectionDTO> sectionList; // [ {id:1}, {id:2},{id:3},{id:4}]
+    @NotEmpty(message = "TagList required")
+    private List<TagDTO> tagList; // [ {id:1}, {id:2},{id:3},{id:4}]
 }

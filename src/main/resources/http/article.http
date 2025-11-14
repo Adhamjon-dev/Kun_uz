@@ -4,12 +4,12 @@ Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjpbIlJPTEVfVVNFUiIsIlJPTEVfTU9ERVJBVE9SIl0sInN1YiI6ImFkaGFtam9ueWF4c2hpYm92QGdtYWlsLmNvbSIsImlhdCI6MTc2MzA1MTU5MywiZXhwIjoxNzYzMTM3OTkzfQ.EepbcIwAJSCO8T8EpB8J3V2jUJkNiPUA88jTnbFU8LT_BMqHeig0bM7K9QDa1YD3gqYP5CNllnkAd7C4UDX16w
 
 {
-  "title": "aaaaaaaa",
-  "content": "ihjkml",
-  "description": "qqqqqq",
+  "title": "aaa5",
+  "content": "aaaa5",
+  "description": "aaaa5",
   "imageId": "1",
   "readTime": 4,
-  "regionId": 1,
+  "regionId": 2,
   "categoryList": [
     {
       "id": 1
@@ -17,10 +17,18 @@ Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjpbIlJPTEVfVVNFUiIsIlJPTEVfT
   ],
   "sectionList": [
     {
-      "id": 1
+      "id": 2
     },
     {
-      "id": 2
+      "id": 1
+    }
+  ],
+  "tagList": [
+    {
+      "id": 4
+    },
+    {
+      "id": 5
     }
   ]
 }
@@ -28,7 +36,7 @@ Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjpbIlJPTEVfVVNFUiIsIlJPTEVfT
 ### Update article
 PUT localhost:8080/api/v1/article/3fa7ba88-fad8-4a73-a2fc-d1b1678c7b9e
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjpbIlJPTEVfVVNFUiIsIlJPTEVfTU9ERVJBVE9SIl0sInN1YiI6ImFkaGFtam9ueWF4c2hpYm92QGdtYWlsLmNvbSIsImlhdCI6MTc2Mjg3NzQ0NCwiZXhwIjoxNzYyOTYzODQ0fQ.jD4LHE1LmqI01KEsCMZuSxfSWVzUg-0UzwsBVzuuJSfRamT1CIhjvCBhg53bf2SE0kHW28WcbmVTtjTrNlY3SQ
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjpbIlJPTEVfVVNFUiIsIlJPTEVfTU9ERVJBVE9SIl0sInN1YiI6ImFkaGFtam9ueWF4c2hpYm92QGdtYWlsLmNvbSIsImlhdCI6MTc2MzA1MTU5MywiZXhwIjoxNzYzMTM3OTkzfQ.EepbcIwAJSCO8T8EpB8J3V2jUJkNiPUA88jTnbFU8LT_BMqHeig0bM7K9QDa1YD3gqYP5CNllnkAd7C4UDX16w
 
 {
   "title": "gh",
@@ -51,12 +59,12 @@ Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjpbIlJPTEVfVVNFUiIsIlJPTEVfT
 ### Delete article
 DELETE localhost:8080/api/v1/article/3fa7ba88-fad8-4a73-a2fc-d1b1678c7b9e
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjpbIlJPTEVfVVNFUiIsIlJPTEVfTU9ERVJBVE9SIl0sInN1YiI6ImFkaGFtam9ueWF4c2hpYm92QGdtYWlsLmNvbSIsImlhdCI6MTc2Mjg3NzQ0NCwiZXhwIjoxNzYyOTYzODQ0fQ.jD4LHE1LmqI01KEsCMZuSxfSWVzUg-0UzwsBVzuuJSfRamT1CIhjvCBhg53bf2SE0kHW28WcbmVTtjTrNlY3SQ
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjpbIlJPTEVfVVNFUiIsIlJPTEVfTU9ERVJBVE9SIl0sInN1YiI6ImFkaGFtam9ueWF4c2hpYm92QGdtYWlsLmNvbSIsImlhdCI6MTc2MzA1MTU5MywiZXhwIjoxNzYzMTM3OTkzfQ.EepbcIwAJSCO8T8EpB8J3V2jUJkNiPUA88jTnbFU8LT_BMqHeig0bM7K9QDa1YD3gqYP5CNllnkAd7C4UDX16w
 
 ### change status
-PUT localhost:8080/api/v1/article/3fa7ba88-fad8-4a73-a2fc-d1b1678c7b9e/status
+PUT localhost:8080/api/v1/article/93a46013-8e44-4fd6-bade-7027269842df/status
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjpbIlJPTEVfVVNFUiIsIlJPTEVfUFVCTElTSCJdLCJzdWIiOiJmYWxzZSIsImlhdCI6MTc2MjkyNDg5NywiZXhwIjoxNzYzMDExMjk3fQ.WcVRKe5LKRNEXG29WGGOMfiXPcZgFwxH7tJFAUAu1LVOCU4A138X_8npAOgatChV89Gz6y6AtB1XtBhB2xPcRw
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjpbIlJPTEVfVVNFUiIsIlJPTEVfUFVCTElTSCJdLCJzdWIiOiJmYWxzZSIsImlhdCI6MTc2MzExOTExNSwiZXhwIjoxNzYzMjA1NTE1fQ.USG3BohPpTiHmULMSg4sc33Y5jqvvHvtAIhIV0aRBdH_wTkfm-X0MhIRQeUbnuh1LdKToX-E_Pf7SeUtzSITqw
 
 {
   "status": "PUBLISHED"
@@ -84,3 +92,15 @@ Content-Type: application/json
 
 ### get by section Id and except article Id
 POST localhost:8080/api/v1/article/section/2/last4?exceptArticleId=3fa7ba88-fad8-4a73-a2fc-d1b1678c7b9e
+
+### get View top 4 and except article Id
+POST localhost:8080/api/v1/article/view_top4?exceptArticleId=3fa7ba88-fad8-4a73-a2fc-d1b1678c7b9e
+
+### get View count By article Id
+GET localhost:8080/api/v1/article/increase/view/3fa7ba88-fad8-4a73-a2fc-d1b1678c7b9e
+
+### get Shared count By article Id
+GET localhost:8080/api/v1/article/increase/shared/3fa7ba88-fad8-4a73-a2fc-d1b1678c7b9e
+
+### get tagName
+GET localhost:8080/api/v1/article/tagName/tag2?limit=7

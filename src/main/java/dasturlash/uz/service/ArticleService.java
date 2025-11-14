@@ -38,6 +38,8 @@ public class ArticleService {
     SectionService sectionService;
     @Autowired
     ProfileService profileService;
+    @Autowired
+    ArticleTagService articleTagService;
 
     public ArticleDTO create(ArticleCreateDTO createDTO) {
         ArticleEntity entity = new ArticleEntity();
@@ -54,6 +56,7 @@ public class ArticleService {
 
         articleCategoryService.merge(entity.getId(), createDTO.getCategoryList());
         articleSectionService.merge(entity.getId(), createDTO.getSectionList());
+        articleTagService.merge(entity.getId(), createDTO.getTagList());
 
         return toDTO(entity);
     }
@@ -65,6 +68,7 @@ public class ArticleService {
 
         articleCategoryService.merge(entity.getId(), createDTO.getCategoryList());
         articleSectionService.merge(entity.getId(), createDTO.getSectionList());
+        articleTagService.merge(entity.getId(), createDTO.getTagList());
 
         return toDTO(entity);
     }
@@ -113,6 +117,12 @@ public class ArticleService {
 
     public PageImpl<ArticleDTO> getLastCategoryId(Integer categoryId, int limit, int page, int size) {
         List<ArticleShortInfo> list = articleRepository.getByCategoryId(categoryId, limit);
+
+        return getPage(list, page, size);
+    }
+
+    public PageImpl<ArticleDTO> getLastByTagName(String tagName, int limit, int page, int size) {
+        List<ArticleShortInfo> list = articleRepository.getByTagName(tagName, limit);
 
         return getPage(list, page, size);
     }
@@ -175,6 +185,29 @@ public class ArticleService {
         return responseList;
     }
 
+    public List<ArticleDTO> getViewTop4ArticleByArticleId(String exceptArticleId) {
+        List<ArticleShortInfo> resultList = articleRepository.getViewTop4ArticleByExceptId(exceptArticleId);
+        List<ArticleDTO> responseList = new LinkedList<>();
+        resultList.forEach(mapper -> responseList.add(toDTO(mapper)));
+        return responseList;
+    }
+
+    public Integer increaseViewCountByArticleId(String articleId) {
+        ArticleEntity entity = getPublished(articleId);
+        entity.setViewCount(entity.getViewCount() + 1);
+        articleRepository.save(entity);
+
+        return entity.getViewCount();
+    }
+
+    public Long increaseSharedCountByArticleId(String articleId) {
+        ArticleEntity entity = getPublished(articleId);
+        entity.setSharedCount(entity.getSharedCount() + 1);
+        articleRepository.save(entity);
+
+        return entity.getSharedCount();
+    }
+
     private void toEntity(ArticleCreateDTO dto, ArticleEntity entity) {
         entity.setTitle(dto.getTitle());
         entity.setDescription(dto.getDescription());
@@ -212,6 +245,14 @@ public class ArticleService {
 
     public ArticleEntity get(String id) {
         Optional<ArticleEntity> optional = articleRepository.findByIdAndVisibleTrue(id);
+        if (optional.isEmpty()) {
+            throw new AppBadException("Article not found");
+        }
+        return optional.get();
+    }
+
+    public ArticleEntity getPublished(String id) {
+        Optional<ArticleEntity> optional = articleRepository.findByIdAndVisibleTrueAndStatus(id, ArticleStatus.PUBLISHED);
         if (optional.isEmpty()) {
             throw new AppBadException("Article not found");
         }

@@ -2,25 +2,22 @@ package dasturlash.uz.repository;
 
 import dasturlash.uz.entitiy.article.ArticleEntity;
 import dasturlash.uz.enums.ArticleStatus;
-import dasturlash.uz.mapper.ArticleFullInfo;
 import dasturlash.uz.mapper.ArticleShortInfo;
 import jakarta.transaction.Transactional;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
 @Repository
 public interface ArticleRepository extends CrudRepository<ArticleEntity, String>, PagingAndSortingRepository<ArticleEntity, String> {
     Optional<ArticleEntity> findByIdAndVisibleTrue(String id);
+
+    Optional<ArticleEntity> findByIdAndVisibleTrueAndStatus(String id, ArticleStatus status);
 
     @Transactional
     @Modifying
@@ -73,10 +70,28 @@ public interface ArticleRepository extends CrudRepository<ArticleEntity, String>
 
     @Query(" select a.id as id, a.title as title, a.description as description, a.imageId as imageId, a.publishedDate as publishedDate " +
             " from  ArticleEntity a " +
+            " where a.id in " +
+            " (select at.articleId from ArticleTagEntity at " +
+            " inner join TagEntity t on at.tagId = t.id " +
+            " where t.name = ?1) " +
+            " and a.visible = true " +
+            " order by a.createdDate desc limit ?2")
+    List<ArticleShortInfo> getByTagName(String tagName, int limit);
+
+    @Query(" select a.id as id, a.title as title, a.description as description, a.imageId as imageId, a.publishedDate as publishedDate " +
+            " from  ArticleEntity a " +
             " inner join ArticleSectionEntity a_s on a_s.articleId = a.id " +
             " where a_s.sectionId = ?2 and a.visible = true " +
             " and a_s.articleId <> ?1" +
             " order by a.createdDate desc  limit 4")
     List<ArticleShortInfo> getBySectionIdAndExceptId(String exceptId, Integer sectionId);
+
+    @Query(" select a.id as id, a.title as title, a.description as description, a.imageId as imageId, a.publishedDate as publishedDate " +
+            " from  ArticleEntity a " +
+            " inner join ArticleSectionEntity a_s on a_s.articleId = a.id " +
+            " where a.visible = true " +
+            " and a_s.articleId <> ?1" +
+            " order by a.viewCount desc  limit 4")
+    List<ArticleShortInfo> getViewTop4ArticleByExceptId(String exceptId);
 
 }

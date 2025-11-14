@@ -1,0 +1,13 @@
+### Create tag
+POST localhost:8080/api/v1/tag
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjpbIlJPTEVfVVNFUiIsIlJPTEVfQURNSU4iXSwic3ViIjoiYWRoYW1qb255YXhzaGlib3lldkBnbWFpbC5jb20iLCJpYXQiOjE3NjMxMDQ4OTYsImV4cCI6MTc2MzE5MTI5Nn0.hcCh7fbKQulIcLmPmQTcW-DqsA12ixML4aoI-zUf93xJeV7s_syLqtVe2mW0ri3w9AR25OXkAE6iaNa3ViTUWg
+
+{
+  "name": "tag5"
+}
+
+### Get all tag
+GET localhost:8080/api/v1/tag/getAll
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjpbIlJPTEVfVVNFUiIsIlJPTEVfQURNSU4iXSwic3ViIjoiYWRoYW1qb255YXhzaGlib3lldkBnbWFpbC5jb20iLCJpYXQiOjE3NjMxMDQ4OTYsImV4cCI6MTc2MzE5MTI5Nn0.hcCh7fbKQulIcLmPmQTcW-DqsA12ixML4aoI-zUf93xJeV7s_syLqtVe2mW0ri3w9AR25OXkAE6iaNa3ViTUWg
