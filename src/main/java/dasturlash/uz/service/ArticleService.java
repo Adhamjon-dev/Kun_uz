@@ -2,6 +2,7 @@ package dasturlash.uz.service;
 
 import dasturlash.uz.dto.CustomFilterResultDTO;
 import dasturlash.uz.dto.RegionDTO;
+import dasturlash.uz.dto.article.ArticleAdminFilterDTO;
 import dasturlash.uz.dto.article.ArticleCreateDTO;
 import dasturlash.uz.dto.article.ArticleDTO;
 import dasturlash.uz.dto.article.ArticleFilterDTO;
@@ -216,12 +217,30 @@ public class ArticleService {
         return entity.getSharedCount();
     }
 
-    public PageImpl<ArticleDTO> filter(ArticleFilterDTO filter, int page, int size) {
-        CustomFilterResultDTO<Object[]> result = customArticleRepository.filter(filter, page, size);
+    public PageImpl<ArticleDTO> filterAny(ArticleFilterDTO filter, int page, int size) {
+        CustomFilterResultDTO<Object[]> result = customArticleRepository.filterAny(filter, page, size);
         List<Object[]> objList = result.getContent();
         long totalCount = result.getTotalCount();
 
+        List<ArticleDTO> dtoList = new LinkedList<>();
+        objList.forEach(objects -> dtoList.add(toDTO(objects)));
+        return new PageImpl<>(dtoList, PageRequest.of(page, size), totalCount);
+    }
 
+    public PageImpl<ArticleDTO> filterModerator(ArticleFilterDTO filter, int page, int size) {
+        CustomFilterResultDTO<Object[]> result = customArticleRepository.filterModerator(filter, page, size);
+        List<Object[]> objList = result.getContent();
+        long totalCount = result.getTotalCount();
+
+        List<ArticleDTO> dtoList = new LinkedList<>();
+        objList.forEach(objects -> dtoList.add(toDTO(objects)));
+        return new PageImpl<>(dtoList, PageRequest.of(page, size), totalCount);
+    }
+
+    public PageImpl<ArticleDTO> filterAdmin(ArticleAdminFilterDTO filter, int page, int size) {
+        CustomFilterResultDTO<Object[]> result = customArticleRepository.filterAdmin(filter, page, size);
+        List<Object[]> objList = result.getContent();
+        long totalCount = result.getTotalCount();
 
         List<ArticleDTO> dtoList = new LinkedList<>();
         objList.forEach(objects -> dtoList.add(toDTO(objects)));

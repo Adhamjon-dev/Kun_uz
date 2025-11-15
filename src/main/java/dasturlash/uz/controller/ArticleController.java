@@ -1,9 +1,6 @@
 package dasturlash.uz.controller;
 
-import dasturlash.uz.dto.article.ArticleChangeStatusDTO;
-import dasturlash.uz.dto.article.ArticleCreateDTO;
-import dasturlash.uz.dto.article.ArticleDTO;
-import dasturlash.uz.dto.article.ArticleFilterDTO;
+import dasturlash.uz.dto.article.*;
 import dasturlash.uz.enums.AppLanguageEnum;
 import dasturlash.uz.service.ArticleService;
 import jakarta.validation.Valid;
@@ -117,6 +114,21 @@ public class ArticleController {
     public ResponseEntity<PageImpl<ArticleDTO>> userFilter(@RequestBody ArticleFilterDTO filter,
                                                            @RequestParam(value = "page", defaultValue = "1") int page,
                                                            @RequestParam(value = "size", defaultValue = "10") int size) {
-        return ResponseEntity.ok(articleService.filter(filter,page - 1, size));
+        return ResponseEntity.ok(articleService.filterAny(filter,page - 1, size));
+    }
+
+    @PreAuthorize("hasRole('MODERATOR')")
+    @PostMapping("moderator/filter")
+    public ResponseEntity<PageImpl<ArticleDTO>> moderatorFilter(@RequestBody ArticleFilterDTO filter,
+                                                           @RequestParam(value = "page", defaultValue = "1") int page,
+                                                           @RequestParam(value = "size", defaultValue = "10") int size) {
+        return ResponseEntity.ok(articleService.filterModerator(filter,page - 1, size));
+    }
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("admin/filter")
+    public ResponseEntity<PageImpl<ArticleDTO>> adminFilter(@RequestBody ArticleAdminFilterDTO filter,
+                                                           @RequestParam(value = "page", defaultValue = "1") int page,
+                                                           @RequestParam(value = "size", defaultValue = "10") int size) {
+        return ResponseEntity.ok(articleService.filterAdmin(filter,page - 1, size));
     }
 }

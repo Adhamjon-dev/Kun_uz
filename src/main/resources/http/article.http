@@ -115,3 +115,26 @@ Content-Type: application/json
   "categoryId": 1,
   "sectionId": 2
 }
+
+### filter moderator
+POST localhost:8080/api/v1/article/moderator/filter
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjpbIlJPTEVfVVNFUiIsIlJPTEVfTU9ERVJBVE9SIl0sInN1YiI6ImFkaGFtam9ueWF4c2hpYm92QGdtYWlsLmNvbSIsImlhdCI6MTc2MzIzNjUyMSwiZXhwIjoxNzYzMzIyOTIxfQ.dq7n-eVQR7gNkMgJ4tQHcaWeZV70NNlx8s6Nc4cI8WJ_5GYz9slrBfP16Kw4dF8QgyPKsa9fRu93tJvAnFCvEw
+
+{
+  "title": "aaa",
+  "categoryId": 1,
+  "sectionId": 2
+}
+
+### filter Admin
+POST localhost:8080/api/v1/article/admin/filter
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjpbIlJPTEVfVVNFUiIsIlJPTEVfQURNSU4iXSwic3ViIjoiYWRoYW1qb255YXhzaGlib3lldkBnbWFpbC5jb20iLCJpYXQiOjE3NjMyMzYzNTEsImV4cCI6MTc2MzMyMjc1MX0.gTI3Rc3TZYRLDxIk_F52CEu9uCUBd4qAK2k5qMFuVfmpWtAttlvklv0Rrlxb4QTf0pnODJN_bRTKmbWAWlHcug
+
+{
+  "title": "aaa",
+  "categoryId": 1,
+  "sectionId": 2,
+  "status": "NOT_PUBLISHED"
+}
