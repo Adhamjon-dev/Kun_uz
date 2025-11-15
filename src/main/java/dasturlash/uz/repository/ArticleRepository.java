@@ -70,10 +70,9 @@ public interface ArticleRepository extends CrudRepository<ArticleEntity, String>
 
     @Query(" select a.id as id, a.title as title, a.description as description, a.imageId as imageId, a.publishedDate as publishedDate " +
             " from  ArticleEntity a " +
-            " where a.id in " +
-            " (select at.articleId from ArticleTagEntity at " +
+            " inner join ArticleTagEntity at on a.id = at.articleId " +
             " inner join TagEntity t on at.tagId = t.id " +
-            " where t.name = ?1) " +
+            " where t.name = ?1 " +
             " and a.visible = true " +
             " order by a.createdDate desc limit ?2")
     List<ArticleShortInfo> getByTagName(String tagName, int limit);

@@ -1,8 +1,13 @@
 package dasturlash.uz.service;
 
+import dasturlash.uz.dto.CustomFilterResultDTO;
 import dasturlash.uz.dto.RegionDTO;
 import dasturlash.uz.dto.article.ArticleCreateDTO;
 import dasturlash.uz.dto.article.ArticleDTO;
+import dasturlash.uz.dto.article.ArticleFilterDTO;
+import dasturlash.uz.dto.profile.ProfileDTO;
+import dasturlash.uz.dto.profile.ProfileFilterDTO;
+import dasturlash.uz.entitiy.ProfileEntity;
 import dasturlash.uz.entitiy.article.ArticleEntity;
 import dasturlash.uz.enums.AppLanguageEnum;
 import dasturlash.uz.enums.ArticleStatus;
@@ -10,6 +15,7 @@ import dasturlash.uz.enums.ProfileRoleEnum;
 import dasturlash.uz.exp.AppBadException;
 import dasturlash.uz.mapper.ArticleShortInfo;
 import dasturlash.uz.repository.ArticleRepository;
+import dasturlash.uz.repository.CustomArticleRepository;
 import dasturlash.uz.util.SpringSecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageImpl;
@@ -40,6 +46,8 @@ public class ArticleService {
     ProfileService profileService;
     @Autowired
     ArticleTagService articleTagService;
+    @Autowired
+    CustomArticleRepository customArticleRepository;
 
     public ArticleDTO create(ArticleCreateDTO createDTO) {
         ArticleEntity entity = new ArticleEntity();
@@ -206,6 +214,28 @@ public class ArticleService {
         articleRepository.save(entity);
 
         return entity.getSharedCount();
+    }
+
+    public PageImpl<ArticleDTO> filter(ArticleFilterDTO filter, int page, int size) {
+        CustomFilterResultDTO<Object[]> result = customArticleRepository.filter(filter, page, size);
+        List<Object[]> objList = result.getContent();
+        long totalCount = result.getTotalCount();
+
+
+
+        List<ArticleDTO> dtoList = new LinkedList<>();
+        objList.forEach(objects -> dtoList.add(toDTO(objects)));
+        return new PageImpl<>(dtoList, PageRequest.of(page, size), totalCount);
+    }
+
+    private ArticleDTO toDTO(Object[] objects) {
+        ArticleDTO dto = new ArticleDTO();
+        dto.setId(objects[0].toString());
+        dto.setTitle(objects[1].toString());
+        dto.setDescription(objects[2].toString());
+//        dto.setImageId(objects[3].toString());
+        dto.setPublishedDate((LocalDateTime) objects[4]);
+        return dto;
     }
 
     private void toEntity(ArticleCreateDTO dto, ArticleEntity entity) {

@@ -3,6 +3,7 @@ package dasturlash.uz.controller;
 import dasturlash.uz.dto.article.ArticleChangeStatusDTO;
 import dasturlash.uz.dto.article.ArticleCreateDTO;
 import dasturlash.uz.dto.article.ArticleDTO;
+import dasturlash.uz.dto.article.ArticleFilterDTO;
 import dasturlash.uz.enums.AppLanguageEnum;
 import dasturlash.uz.service.ArticleService;
 import jakarta.validation.Valid;
@@ -110,5 +111,12 @@ public class ArticleController {
                                                                        @RequestParam(value = "page", defaultValue = "1") int page,
                                                                        @RequestParam(value = "size", defaultValue = "10") int size) {
         return ResponseEntity.ok(articleService.getLastByTagName(tagName, limit, page - 1, size));
+    }
+
+    @PostMapping("user/filter")
+    public ResponseEntity<PageImpl<ArticleDTO>> userFilter(@RequestBody ArticleFilterDTO filter,
+                                                           @RequestParam(value = "page", defaultValue = "1") int page,
+                                                           @RequestParam(value = "size", defaultValue = "10") int size) {
+        return ResponseEntity.ok(articleService.filter(filter,page - 1, size));
     }
 }

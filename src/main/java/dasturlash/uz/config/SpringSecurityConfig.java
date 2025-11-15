@@ -36,7 +36,8 @@ public class SpringSecurityConfig {
             "/api/v1/article/get/*",
             "/api/v1/article/view_top4",
             "/api/v1/article/increase/**",
-            "/api/v1/article/tagName/*"
+            "/api/v1/article/tagName/*",
+            "/api/v1/article/user/filter"
     };
 
     @Bean
