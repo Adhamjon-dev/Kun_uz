@@ -1,0 +1,9 @@
+### create Commit
+POST localhost:8080/api/v1/comment/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjpbIlJPTEVfVVNFUiIsIlJPTEVfTU9ERVJBVE9SIl0sInN1YiI6ImFkaGFtam9ueWF4c2hpYm92QGdtYWlsLmNvbSIsImlhdCI6MTc2MzM4MjMyMCwiZXhwIjoxNzYzNDY4NzIwfQ.zTO3sFA2bYoJJjDso-J1uHVZZUAWzEYSXPaoJ1F7N8oPIFieV9fz3Tb4mUvVV3atOr_t6p-Nbukl85SNQQAcHQ
+
+{
+  "content": "aaaa",
+  "articleId": "93a46013-8e44-4fd6-bade-7027269842df"
+}
