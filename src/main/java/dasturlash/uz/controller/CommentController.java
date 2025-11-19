@@ -19,20 +19,17 @@ public class CommentController {
     @Autowired
     private CommentService commentService;
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'USER', 'MODERATOR', 'PUBLISH')")
     @PostMapping({"", "/"})
     public ResponseEntity<CommentDTO> create(@Valid @RequestBody CommentCreateDTO dto) {
         return ResponseEntity.ok(commentService.create(dto));
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'USER', 'MODERATOR', 'PUBLISH')")
     @PutMapping("/{id}")
     public ResponseEntity<CommentDTO> update(@PathVariable Integer id,
                                           @Valid @RequestBody CommentCreateDTO dto) {
         return ResponseEntity.ok(commentService.update(id, dto));
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'USER', 'MODERATOR', 'PUBLISH')")
     @DeleteMapping("{id}")
     public ResponseEntity<Boolean> delete(@PathVariable Integer id) {
         return ResponseEntity.ok(commentService.delete(id));
@@ -46,7 +43,7 @@ public class CommentController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("article/{id}")
-    public ResponseEntity<List<CommentDTO>> getByArticleId(@PathVariable Integer id) {
+    public ResponseEntity<List<CommentDTO>> getByArticleId(@PathVariable String id) {
         return ResponseEntity.ok(commentService.getByArticleId(id));
     }
 

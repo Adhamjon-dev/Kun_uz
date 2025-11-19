@@ -9,6 +9,7 @@ import dasturlash.uz.dto.profile.ProfileDTO;
 import dasturlash.uz.entitiy.CommentEntity;
 import dasturlash.uz.exp.AppAccessDeniedException;
 import dasturlash.uz.exp.AppBadException;
+import dasturlash.uz.mapper.CommentShortInfo;
 import dasturlash.uz.repository.CommentRepository;
 import dasturlash.uz.repository.CustomCommentRepository;
 import dasturlash.uz.util.SpringSecurityUtil;
@@ -78,9 +79,11 @@ public class CommentService {
         return commentDTO;
     }
 
-    public List<CommentDTO> getByArticleId(Integer articleId) {
-        List<CommentDTO> dtoList = commentRepository.getByArticleId(articleId);
-        dtoList.forEach(dto -> dto.setProfile(profileService.getById(dto.getProfileId())));
+    public List<CommentDTO> getByArticleId(String articleId) {
+        List<CommentShortInfo> objList = commentRepository.getByArticleId(articleId);
+
+        List<CommentDTO> dtoList = new LinkedList<>();
+        objList.forEach(objects -> dtoList.add(toShortDTO(objects)));
         return dtoList;
     }
 
@@ -105,7 +108,7 @@ public class CommentService {
         if (objects[9] != null) {
             dto.setReplyId((Integer) objects[9]);
         }
-
+        dto.setVisible((Boolean) objects[10]);
         return dto;
     }
 
@@ -119,9 +122,20 @@ public class CommentService {
 
     private ArticleDTO getArticle(Object[] objects) {
         ArticleDTO articleDTO = new ArticleDTO();
-        articleDTO.setId(objects[7].toString());
+        articleDTO.setId((String) objects[7]);
         articleDTO.setTitle((String) objects[8]);
         return articleDTO;
+    }
+
+    private CommentDTO toShortDTO(CommentShortInfo mapper) {
+        CommentDTO dto = new CommentDTO();
+        dto.setId(mapper.getId());
+        dto.setCreatedDate(mapper.getCreatedDate());
+        dto.setUpdateDate(mapper.getUpdateDate());
+        dto.setContent(mapper.getContent());
+        dto.setArticleId(mapper.getArticleId());
+        dto.setProfile(profileService.getById(mapper.getProfileId()));
+        return dto;
     }
 
     private CommentDTO toDTO(CommentEntity entity) {
@@ -138,7 +152,7 @@ public class CommentService {
     public CommentEntity get(Integer id) {
         Optional<CommentEntity> optional = commentRepository.findByIdAndVisibleTrue(id);
         if (optional.isEmpty()) {
-            throw new AppBadException("Article not found");
+            throw new AppBadException("Comment not found");
         }
         return optional.get();
     }

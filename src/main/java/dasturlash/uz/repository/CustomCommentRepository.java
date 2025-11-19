@@ -43,10 +43,10 @@ public class CustomCommentRepository {
             conditionBuilder.append("and c.createdDate <= :createdDateTo ");
             params.put("createdDateTo", dateTo);
         }
-        StringBuilder selectBuilder = new StringBuilder("Select c.id, c.createdDete, c.updateDate, c.content, p.id, p.name " +
+        StringBuilder selectBuilder = new StringBuilder("Select c.id, c.createdDate, c.updateDate, c.content, p.id, p.name, " +
                 "p.surname, a.id, a.title, c.replyId, c.visible From CommentEntity c " +
                 "inner join ProfileEntity p on p.id =c.profileId " +
-                "inner join ArticleEntity a c.articleId = a.id ");
+                "inner join ArticleEntity a on c.articleId = a.id ");
         selectBuilder.append(conditionBuilder);
 
         Query selectQuery = entityManager.createQuery(selectBuilder.toString());
@@ -55,7 +55,7 @@ public class CustomCommentRepository {
 
         StringBuilder countBuilder = new StringBuilder("Select count(c) From CommentEntity c " +
                 "inner join ProfileEntity p on p.id =c.profileId " +
-                "inner join ArticleEntity a c.articleId = a.id ");
+                "inner join ArticleEntity a on c.articleId = a.id ");
         countBuilder.append(conditionBuilder);
         Query countQuery = entityManager.createQuery(countBuilder.toString());
 
