@@ -1,6 +1,7 @@
 package dasturlash.uz.dto.comment;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import dasturlash.uz.dto.AttachDTO;
 import dasturlash.uz.dto.article.ArticleDTO;
 import dasturlash.uz.dto.profile.ProfileDTO;
 import lombok.Getter;
@@ -19,8 +20,7 @@ public class CommentDTO {
     Integer profileId;
     String profileName;
     String profileSurname;
-    String profileImageId;
-    String profileImageUrl;
+    AttachDTO profileImage;
     String articleId;
     String articleTitle;
     Integer replyId;

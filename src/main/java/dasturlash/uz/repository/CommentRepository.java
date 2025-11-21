@@ -23,7 +23,6 @@ public interface CommentRepository extends CrudRepository<CommentEntity,Integer>
                c.profileId as profileId,
                p.name as profileName,
                p.photoId as profileImageId,
-               a.path as profileImageUrl,
                (
                     select count(cl)
                     from CommentLikeEntity cl
@@ -36,13 +35,10 @@ public interface CommentRepository extends CrudRepository<CommentEntity,Integer>
                ) as dislikeCount
         from CommentEntity c
         join ProfileEntity p on p.id = c.profileId
-        inner join AttachEntity a on a.id = p.photoId
         where c.articleId = :articleId and c.visible = true
         order by c.createdDate desc
         """)
     List<CommentMapper> getByArticleId(@Param("articleId") String articleId);
-
-
 
     @Query("select c.id as id, c.createdDate as createdDate, c.updateDate as updateDate,c.content as content, " +
             "c.profileId as  profileId, p.name as profileName, p.photoId as profileImageId, " +

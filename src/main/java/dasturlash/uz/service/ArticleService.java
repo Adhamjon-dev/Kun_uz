@@ -39,6 +39,8 @@ public class ArticleService {
     ArticleTagService articleTagService;
     @Autowired
     CustomArticleRepository customArticleRepository;
+    @Autowired
+    AttachService attachService;
 
     public ArticleDTO create(ArticleCreateDTO createDTO) {
         ArticleEntity entity = new ArticleEntity();
@@ -265,7 +267,7 @@ public class ArticleService {
         dto.setId(mapper.getId());
         dto.setTitle(mapper.getTitle());
         dto.setDescription(mapper.getDescription());
-//        dto.setImage(attachService.openDTO(mapper.getId()));
+        dto.setImage(attachService.openDTO(mapper.getImageId()));
         dto.setPublishedDate(mapper.getPublishedDate());
         return dto;
     }

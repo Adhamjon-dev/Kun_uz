@@ -32,6 +32,8 @@ public class CommentService {
     ProfileService profileService;
     @Autowired
     CustomCommentRepository customCommentRepository;
+    @Autowired
+    AttachService attachService;
 
     public CommentDTO create(CommentCreateDTO createDTO) {
         CommentEntity entity = new CommentEntity();
@@ -142,8 +144,9 @@ public class CommentService {
         dto.setProfileId(mapper.getProfileId());
         dto.setProfileName(mapper.getProfileName());
         dto.setProfileSurname(mapper.getProfileSurname());
-        dto.setProfileImageId(mapper.getProfileImageId());
-        dto.setProfileImageUrl(mapper.getProfileImageUrl());
+        if (mapper.getProfileImageId() != null) {
+            dto.setProfileImage(attachService.openDTO(mapper.getProfileImageId()));
+        }
         dto.setLikeCount(mapper.getLikeCount());
         dto.setDislikeCount(mapper.getDislikeCount());
         dto.setVisible(mapper.getVisible());

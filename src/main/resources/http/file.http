@@ -3,9 +3,18 @@ POST http://localhost:8080/api/v1/attach/upload
 Content-Type: multipart/form-data; boundary=WebAppBoundary
 
 --WebAppBoundary
-Content-Disposition: form-data; name="file"; filename="eshak.jpg"
+Content-Disposition: form-data; name="file"; filename="bulut.png"
 
-< D:\Downloads\eshak.jpg
+< C:\Users\Asus\OneDrive\Rasmlar\Screenshots\bulut.png
 
 ### Open attach
 GET http://localhost:8080/api/v1/attach/open/bae2542f-98fa-475b-9c40-303165050667.jpg
+
+### Download attach
+GET localhost:8080/api/v1/attach/download/bae2542f-98fa-475b-9c40-303165050667.jpg
+
+### delete attach
+DELETE localhost:8080/api/v1/attach/delete/bae2542f-98fa-475b-9c40-303165050667.jpg
+
+### Pagination
+GET localhost:8080/api/v1/attach/pagination
