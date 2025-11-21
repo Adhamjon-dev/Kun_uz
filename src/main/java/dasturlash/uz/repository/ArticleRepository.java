@@ -2,12 +2,14 @@ package dasturlash.uz.repository;
 
 import dasturlash.uz.entitiy.article.ArticleEntity;
 import dasturlash.uz.enums.ArticleStatus;
+import dasturlash.uz.mapper.ArticleFullMapper;
 import dasturlash.uz.mapper.ArticleShortInfo;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -93,4 +95,77 @@ public interface ArticleRepository extends CrudRepository<ArticleEntity, String>
             " order by a.viewCount desc  limit 4")
     List<ArticleShortInfo> getViewTop4ArticleByExceptId(String exceptId);
 
+    @Query(value = """
+    select
+        a.id as id,
+        a.title as title,
+        a.description as description,
+        a.content as content,
+        a.shared_count as sharedCount,
+        a.view_count as viewCount,
+        a.read_time as readTime,
+        CASE :lang
+            WHEN 'UZ' THEN r.name_uz
+            WHEN 'RU' THEN r.name_ru
+            WHEN 'EN' THEN r.name_en
+        END as regionName,
+        r.region_key as regionKey,
+        p.id as moderatorId,
+        p.name as moderatorName,
+        (
+            select json_agg(
+                       json_build_object(
+                           'id', s.id,
+                           'name',
+                                CASE :lang
+                                    WHEN 'UZ' THEN s.name_uz
+                                    WHEN 'RU' THEN s.name_ru
+                                    WHEN 'EN' THEN s.name_en
+                                END
+                       )
+                   )::text
+            from article_section a_s
+            join section s on s.id = a_s.section_id
+            where a_s.article_id = a.id
+        ) as sections,
+        (
+            select json_agg(
+                       json_build_object(
+                           'categoryKey', c.id,
+                           'name',
+                                CASE :lang
+                                    WHEN 'UZ' THEN c.name_uz
+                                    WHEN 'RU' THEN c.name_ru
+                                    WHEN 'EN' THEN c.name_en
+                                END
+                       )
+                   )::text
+            from article_category a_c
+            join category c on c.id = a_c.category_id
+            where a_c.article_id = a.id
+        ) as categories,
+        (
+            select json_agg(
+                       json_build_object(
+                           'name', t.name
+                       )
+                   )::text
+            from article_tag a_t
+            join tags t on t.id = a_t.tag_id
+            where a_t.article_id = a.id
+        ) as tags,
+        (
+            select count(a_l) from article_like a_l
+            where a_l.article_id = a.id and a_l.emotion = 'LIKE'
+        ) as likeCount,
+        (
+            select count(a_l) from article_like a_l
+            where a_l.article_id = a.id and a_l.emotion = 'DISLIKE'
+        ) as dislikeCount
+    from article a
+    join region r on r.id = a.region_id
+    join profile p on p.id = a.moderator_id
+    where a.id = :articleId and a.visible = true
+    """, nativeQuery = true)
+    ArticleFullMapper getByArticleIdAndLang(@Param("articleId") String articleId, @Param("lang") String lang);
 }

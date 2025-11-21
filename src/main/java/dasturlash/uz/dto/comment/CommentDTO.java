@@ -16,12 +16,15 @@ public class CommentDTO {
     LocalDateTime createdDate;
     LocalDateTime updateDate;
     String content;
-    ProfileDTO profile;
     Integer profileId;
-    ArticleDTO article;
+    String profileName;
+    String profileSurname;
+    String profileImageId;
+    String profileImageUrl;
     String articleId;
+    String articleTitle;
     Integer replyId;
     Boolean visible;
-    Integer likeCount;
-    Integer dislikeCount;
+    Long likeCount;
+    Long dislikeCount;
 }

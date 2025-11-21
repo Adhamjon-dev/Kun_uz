@@ -1,21 +1,20 @@
 package dasturlash.uz.service;
 
 import dasturlash.uz.dto.CustomFilterResultDTO;
-import dasturlash.uz.dto.article.ArticleDTO;
 import dasturlash.uz.dto.comment.CommentCreateDTO;
 import dasturlash.uz.dto.comment.CommentDTO;
 import dasturlash.uz.dto.comment.CommentFilterDTO;
-import dasturlash.uz.dto.profile.ProfileDTO;
 import dasturlash.uz.entitiy.CommentEntity;
 import dasturlash.uz.exp.AppAccessDeniedException;
 import dasturlash.uz.exp.AppBadException;
-import dasturlash.uz.mapper.CommentShortInfo;
+import dasturlash.uz.mapper.CommentMapper;
 import dasturlash.uz.repository.CommentRepository;
 import dasturlash.uz.repository.CustomCommentRepository;
 import dasturlash.uz.util.SpringSecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -71,19 +70,20 @@ public class CommentService {
         return true;
     }
 
-    public CommentDTO getById(Integer id) {
-        CommentEntity entity = get(id);
-        CommentDTO commentDTO = toDTO(entity);
-        ProfileDTO profileDTO = profileService.getById(entity.getProfileId());
-        commentDTO.setProfile(profileDTO);
-        return commentDTO;
+    public List<CommentDTO> getByArticleIdAndProfileId(String articleId) {
+        Integer profileId = SpringSecurityUtil.getCurrentUserId();
+        List<CommentMapper> mapperList = commentRepository.getByArticleIdAndProfileId(articleId, profileId);
+
+        List<CommentDTO> dtoList = new LinkedList<>();
+        mapperList.forEach(mapper -> dtoList.add(toDTO(mapper)));
+        return dtoList;
     }
 
     public List<CommentDTO> getByArticleId(String articleId) {
-        List<CommentShortInfo> objList = commentRepository.getByArticleId(articleId);
+        List<CommentMapper> mapperList = commentRepository.getByArticleId(articleId);
 
         List<CommentDTO> dtoList = new LinkedList<>();
-        objList.forEach(objects -> dtoList.add(toShortDTO(objects)));
+        mapperList.forEach(mapper -> dtoList.add(toDTO(mapper)));
         return dtoList;
     }
 
@@ -97,44 +97,57 @@ public class CommentService {
         return new PageImpl<>(dtoList, PageRequest.of(page, size), totalCount);
     }
 
+    public PageImpl<CommentDTO> pagination(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        PageImpl<CommentMapper> resultPage = commentRepository.pagination(pageable);
+
+        List<CommentMapper> mapperList = resultPage.getContent();
+        long totalCount = resultPage.getTotalElements();
+
+        List<CommentDTO> dtoList = new LinkedList<>();
+        mapperList.forEach(mapper -> dtoList.add(toDTO(mapper)));
+        return new PageImpl<>(dtoList, PageRequest.of(page, size), totalCount);
+    }
+
     private CommentDTO toDTO(Object[] objects) {
         CommentDTO dto = new CommentDTO();
         dto.setId((Integer) objects[0]);
         dto.setCreatedDate((LocalDateTime) objects[1]);
-        dto.setUpdateDate((LocalDateTime) objects[2]);
+        if (objects[2] != null) {
+            dto.setUpdateDate((LocalDateTime) objects[2]);
+        }
         dto.setContent((String) objects[3]);
-        dto.setProfile(getProfile(objects));
-        dto.setArticle(getArticle(objects));
+        dto.setProfileId((Integer) objects[4]);
+        dto.setProfileName((String) objects[5]);
+        dto.setProfileSurname((String) objects[6]);
+        dto.setArticleId((String) objects[7]);
+        dto.setArticleTitle((String) objects[8]);
         if (objects[9] != null) {
             dto.setReplyId((Integer) objects[9]);
         }
         dto.setVisible((Boolean) objects[10]);
+        dto.setLikeCount((Long) objects[11]);
+        dto.setDislikeCount((Long) objects[12]);
         return dto;
     }
 
-    private ProfileDTO getProfile(Object[] objects) {
-        ProfileDTO profileDTO = new ProfileDTO();
-        profileDTO.setId((Integer) objects[4]);
-        profileDTO.setName((String) objects[5]);
-        profileDTO.setSurname((String) objects[6]);
-        return profileDTO;
-    }
-
-    private ArticleDTO getArticle(Object[] objects) {
-        ArticleDTO articleDTO = new ArticleDTO();
-        articleDTO.setId((String) objects[7]);
-        articleDTO.setTitle((String) objects[8]);
-        return articleDTO;
-    }
-
-    private CommentDTO toShortDTO(CommentShortInfo mapper) {
+    private CommentDTO toDTO(CommentMapper mapper) {
         CommentDTO dto = new CommentDTO();
         dto.setId(mapper.getId());
         dto.setCreatedDate(mapper.getCreatedDate());
         dto.setUpdateDate(mapper.getUpdateDate());
         dto.setContent(mapper.getContent());
         dto.setArticleId(mapper.getArticleId());
-        dto.setProfile(profileService.getById(mapper.getProfileId()));
+        dto.setArticleTitle(mapper.getArticleTitle());
+        dto.setProfileId(mapper.getProfileId());
+        dto.setProfileName(mapper.getProfileName());
+        dto.setProfileSurname(mapper.getProfileSurname());
+        dto.setProfileImageId(mapper.getProfileImageId());
+        dto.setProfileImageUrl(mapper.getProfileImageUrl());
+        dto.setLikeCount(mapper.getLikeCount());
+        dto.setDislikeCount(mapper.getDislikeCount());
+        dto.setVisible(mapper.getVisible());
+        dto.setReplyId(mapper.getReplyId());
         return dto;
     }
 
@@ -145,6 +158,7 @@ public class CommentService {
         dto.setArticleId(entity.getArticleId());
         dto.setCreatedDate(entity.getCreatedDate());
         dto.setUpdateDate(entity.getUpdateDate());
+        dto.setReplyId(entity.getReplyId());
 
         return dto;
     }

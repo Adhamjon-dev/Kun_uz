@@ -1,0 +1,11 @@
+### createa attach
+POST http://localhost:8080/api/v1/attach/upload
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="file"; filename="eshak.jpg"
+
+< D:\Downloads\eshak.jpg
+
+### Open attach
+GET http://localhost:8080/api/v1/attach/open/bae2542f-98fa-475b-9c40-303165050667.jpg

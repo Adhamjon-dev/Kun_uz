@@ -35,23 +35,29 @@ public class CommentController {
         return ResponseEntity.ok(commentService.delete(id));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping("get/{id}")
-    public ResponseEntity<CommentDTO> getById(@PathVariable Integer id) {
-        return ResponseEntity.ok(commentService.getById(id));
+    @GetMapping("/article_own/{id}")
+    public ResponseEntity<List<CommentDTO>> getByArticleIdAndProfileId(@PathVariable String id) {
+        return ResponseEntity.ok(commentService.getByArticleIdAndProfileId(id));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping("article/{id}")
+    @GetMapping("/article/{id}")
     public ResponseEntity<List<CommentDTO>> getByArticleId(@PathVariable String id) {
         return ResponseEntity.ok(commentService.getByArticleId(id));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping("filter")
+    @PostMapping("/filter")
     public ResponseEntity<PageImpl<CommentDTO>> filter(@RequestBody CommentFilterDTO dto,
                                                        @RequestParam(value = "page", defaultValue = "1") int page,
                                                        @RequestParam(value = "size", defaultValue = "10") int size) {
         return ResponseEntity.ok(commentService.filter(dto,page - 1,size));
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/pagination")
+    public ResponseEntity<PageImpl<CommentDTO>> pagination(@RequestParam(value = "page", defaultValue = "1") int page,
+                                                       @RequestParam(value = "size", defaultValue = "10") int size) {
+        return ResponseEntity.ok(commentService.pagination(page - 1,size));
     }
 }

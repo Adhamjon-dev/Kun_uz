@@ -1,7 +1,6 @@
 package dasturlash.uz.service;
 
-import dasturlash.uz.dto.CustomFilterResultDTO;
-import dasturlash.uz.dto.RegionDTO;
+import dasturlash.uz.dto.*;
 import dasturlash.uz.dto.article.ArticleAdminFilterDTO;
 import dasturlash.uz.dto.article.ArticleCreateDTO;
 import dasturlash.uz.dto.article.ArticleDTO;
@@ -11,9 +10,11 @@ import dasturlash.uz.enums.AppLanguageEnum;
 import dasturlash.uz.enums.ArticleStatus;
 import dasturlash.uz.enums.ProfileRoleEnum;
 import dasturlash.uz.exp.AppBadException;
+import dasturlash.uz.mapper.ArticleFullMapper;
 import dasturlash.uz.mapper.ArticleShortInfo;
 import dasturlash.uz.repository.ArticleRepository;
 import dasturlash.uz.repository.CustomArticleRepository;
+import dasturlash.uz.util.FileUtil;
 import dasturlash.uz.util.SpringSecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageImpl;
@@ -34,14 +35,6 @@ public class ArticleService {
     ArticleSectionService articleSectionService;
     @Autowired
     ArticleCategoryService articleCategoryService;
-    @Autowired
-    RegionService  regionService;
-    @Autowired
-    CategoryService categoryService;
-    @Autowired
-    SectionService sectionService;
-    @Autowired
-    ProfileService profileService;
     @Autowired
     ArticleTagService articleTagService;
     @Autowired
@@ -157,31 +150,19 @@ public class ArticleService {
 
     //  first way
     public ArticleDTO getByIdAndLang(String id, AppLanguageEnum lang) {
-        Optional<ArticleEntity> articleOptional = articleRepository.findById(id);
-        if (articleOptional.isEmpty()) {
-            throw new AppBadException("Article Not Found");
+        ArticleFullMapper mapper = articleRepository.getByArticleIdAndLang(id, lang.name());
+
+        if (mapper == null) {
+            throw new AppBadException("Article not found");
         }
-        ArticleEntity article = articleOptional.get();
 
-        ArticleDTO result = new ArticleDTO();
-        result.setId(article.getId());
-        result.setTitle(article.getTitle());
-        result.setContent(article.getContent());
-        result.setDescription(article.getDescription());
-        result.setSharedCount(article.getSharedCount());
-        result.setViewCount(article.getViewCount());
-        result.setPublishedDate(article.getPublishedDate());
-        // region(key,name)
-        RegionDTO region = regionService.getByIdAndLang(article.getRegionId(), lang);
-        result.setRegion(region);
-        // categoryList[{key,name},{}]
-        result.setCategoryList(categoryService.getCategoryListByArticleId(article.getId(), lang));
-        // sectionList[{id,name},{id,name}]
-        result.setSectionList(sectionService.getSectionListByArticleId(article.getId(), lang));
-        // moderator -
-        result.setModerator(profileService.getById(article.getModeratorId()));
-
-        return result;
+        List<CategoryDTO> categories;
+        List<SectionDTO> sections;
+        List<TagDTO> tags;
+        categories = FileUtil.read(mapper.getCategories(), CategoryDTO.class);
+        sections = FileUtil.read(mapper.getSections(), SectionDTO.class);
+        tags = FileUtil.read(mapper.getTags(), TagDTO.class);
+        return toDTO(mapper, categories, sections, tags);
     }
 
     public List<ArticleDTO> getByLast4ArticleBySectionId(Integer sectionId, String exceptArticleId) {
@@ -286,6 +267,27 @@ public class ArticleService {
         dto.setDescription(mapper.getDescription());
 //        dto.setImage(attachService.openDTO(mapper.getId()));
         dto.setPublishedDate(mapper.getPublishedDate());
+        return dto;
+    }
+
+    private ArticleDTO toDTO(ArticleFullMapper mapper, List<CategoryDTO> categories, List<SectionDTO> sections, List<TagDTO> tags) {
+        ArticleDTO dto = new ArticleDTO();
+        dto.setId(mapper.getId());
+        dto.setTitle(mapper.getTitle());
+        dto.setDescription(mapper.getDescription());
+        dto.setContent(mapper.getContent());
+        dto.setSharedCount(mapper.getSharedCount());
+        dto.setViewCount(mapper.getViewCount());
+        dto.setReadTime(mapper.getReadTime());
+        dto.setRegionName(mapper.getRegionName());
+        dto.setRegionKey(mapper.getRegionKey());
+        dto.setModeratorId(mapper.getModeratorId());
+        dto.setModeratorName(mapper.getModeratorName());
+        dto.setCategoryList(categories);
+        dto.setSectionList(sections);
+        dto.setTagList(tags);
+        dto.setLikeCount(mapper.getLikeCount());
+        dto.setDislikeCount(mapper.getDislikeCount());
         return dto;
     }
 

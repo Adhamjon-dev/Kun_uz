@@ -62,7 +62,7 @@ public class ArticleController {
 
     @GetMapping("/get/{articleId}")
     public ResponseEntity<ArticleDTO> getByIdAndLang(@PathVariable("articleId") String articleId,
-                                                               @RequestHeader(name = "Accept-Language", defaultValue = "uz") AppLanguageEnum language) {
+                                                            @RequestHeader(name = "Accept-Language", defaultValue = "uz") AppLanguageEnum language) {
         return ResponseEntity.ok(articleService.getByIdAndLang(articleId, language));
     }
 
