@@ -3,15 +3,15 @@ POST http://localhost:8080/api/v1/attach/upload
 Content-Type: multipart/form-data; boundary=WebAppBoundary
 
 --WebAppBoundary
-Content-Disposition: form-data; name="file"; filename="bulut.png"
+Content-Disposition: form-data; name="file"; filename="video.mp4"
 
-< C:\Users\Asus\OneDrive\Rasmlar\Screenshots\bulut.png
+< D:\Downloads\Telegram Desktop\video.mp4
 
 ### Open attach
-GET http://localhost:8080/api/v1/attach/open/bae2542f-98fa-475b-9c40-303165050667.jpg
+GET http://localhost:8080/api/v1/attach/open/49008308-8024-4982-99a0-d5a0312fb500.png
 
 ### Download attach
-GET localhost:8080/api/v1/attach/download/bae2542f-98fa-475b-9c40-303165050667.jpg
+GET localhost:8080/api/v1/attach/download/49008308-8024-4982-99a0-d5a0312fb500.png
 
 ### delete attach
 DELETE localhost:8080/api/v1/attach/delete/bae2542f-98fa-475b-9c40-303165050667.jpg

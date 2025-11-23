@@ -32,7 +32,7 @@ public class AttachService {
     @Value("${attache.folder}")
     private String folderName;
 
-    @Value("${server.url}")
+    @Value("${attache.url}")
     private String attachUrl;
 
     public AttachDTO upload(MultipartFile file) {
@@ -73,28 +73,9 @@ public class AttachService {
         }
     }
 
-    public AttachDTO upload2(MultipartFile file) {
-
-        try {
-            File folder = new File("attaches");
-            if (!folder.exists()) {
-                folder.mkdir();
-            }
-
-            byte[] bytes = file.getBytes();
-            Path path = Paths.get("attaches/" + file.getOriginalFilename());
-            Files.write(path, bytes);
-            System.out.println(file.getOriginalFilename());
-            return null;
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
     public ResponseEntity<Resource> open(String id) {
         AttachEntity entity = getEntity(id);
-        Path filePath = Paths.get(folderName + "/" + entity.getPath()+ "/" + id).normalize();
+        Path filePath = Paths.get(folderName + "/" + entity.getPath() + "/" + id).normalize();
 
         Resource resource = null;
         try {
@@ -197,12 +178,12 @@ public class AttachService {
     }
 
     public String openURL(String fileName) {
-        return attachUrl + "/api/v1/attach/open/" + fileName;
+        return attachUrl + "/" + fileName;
     }
 
     public AttachDTO openDTO(String id) {
         AttachDTO attachDTO = new AttachDTO();
-        attachDTO.setUrl(attachUrl + "/api/v1/attach/open/" + id);
+        attachDTO.setUrl(openURL(id));
         attachDTO.setId(id);
         return attachDTO;
     }
