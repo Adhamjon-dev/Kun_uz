@@ -68,6 +68,15 @@ Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjpbIlJPTEVfVVNFUiIsIlJPTEVfQ
   "newPassword": "12345"
 }
 
+### Update photo
+PUT localhost:8080/api/v1/profile/photo
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjpbIlJPTEVfVVNFUiIsIlJPTEVfQURNSU4iXSwic3ViIjoiYWRoYW1qb255YXhzaGlib3lldkBnbWFpbC5jb20iLCJpYXQiOjE3NjM4ODI1NjIsImV4cCI6MTc2Mzk2ODk2Mn0.tfeBqRIvVcTe2-GP6WQGz6y_g_5vdr_Ak6GaV-Da09JJcToibS66wwLFllJ29VQzBsd-EBfGx48b_jGavX6o8A
+
+{
+  "photoId": "49008308-8024-4982-99a0-d5a0312fb500.png"
+}
+
 ### Get By Id
 GET localhost:8080/api/v1/profile/get/39
 Content-Type: application/json

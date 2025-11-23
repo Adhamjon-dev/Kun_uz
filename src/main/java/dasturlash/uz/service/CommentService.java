@@ -29,8 +29,6 @@ public class CommentService {
     @Autowired
     private CommentRepository commentRepository;
     @Autowired
-    ProfileService profileService;
-    @Autowired
     CustomCommentRepository customCommentRepository;
     @Autowired
     AttachService attachService;

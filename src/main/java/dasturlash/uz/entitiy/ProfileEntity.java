@@ -36,6 +36,9 @@ public class ProfileEntity {
 
     @Column(name = "photo_id")
     private String photoId; // Will do it later (in attach topic)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "photo_id", insertable = false, updatable = false)
+    private AttachEntity photo;
 
     @Column(name = "visible", nullable = false)
     private Boolean visible = true;

@@ -97,6 +97,16 @@ public class ProfileService {
         throw new AppBadException("Current password does not match");
     }
 
+    public Boolean updatePhoto(ProfileUpdatePhotoDTO dto) {
+        ProfileEntity profile = getById(SpringSecurityUtil.getCurrentUserId());
+        if (profile.getVisible()) {
+            profile.setPhotoId(dto.getPhotoId());
+            profileRepository.save(profile);
+            return true;
+        }
+        throw new AppBadException("User not found");
+    }
+
     public PageImpl<ProfileDTO> pagination(int page, int size) {
         Pageable pageable = PageRequest.of(page, size,  Sort.by("createdDate").descending());
         Page<ProfileEntity> pageResult = profileRepository.findAll(pageable);
@@ -159,12 +169,11 @@ public class ProfileService {
         return profileRepository.findByIdAndStatusAndVisibleTrue(id, ProfileStatus.NOT_ACTIVE);
     }
 
-    public ProfileDTO getById(Integer id) {
+    public ProfileEntity getById(Integer id) {
         Optional<ProfileEntity> optional =  profileRepository.findById(id);
         if (optional.isEmpty()) {
             throw new AppBadException("Item not found");
         }
-        ProfileEntity entity = optional.get();
-        return toDto(entity);
+        return optional.get();
     }
 }

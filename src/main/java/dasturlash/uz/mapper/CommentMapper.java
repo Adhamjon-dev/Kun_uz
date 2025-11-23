@@ -18,7 +18,6 @@ public interface CommentMapper {
     String getProfileName();
     String getProfileSurname();
     String getProfileImageId();
-    String getProfileImageUrl();
 
     Integer getReplyId();
     Boolean getVisible();

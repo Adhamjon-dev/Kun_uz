@@ -29,16 +29,19 @@ public class ProfileController {
         return ResponseEntity.ok(profileService.updateAdmin(id, dto));
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN','USER', 'MODERATOR')")
     @PutMapping("/own")
     public ResponseEntity<Boolean> updateOwn(@Valid @RequestBody UpdateProfileOwnDTO dto) {
         return ResponseEntity.ok(profileService.updateOwn(dto));
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN','USER', 'MODERATOR')")
     @PutMapping("/password")
     public ResponseEntity<Boolean> updatePassword(@Valid @RequestBody ProfileUpdatePasswordDTO dto) {
         return ResponseEntity.ok(profileService.updatePassword(dto));
+    }
+
+    @PutMapping("/photo")
+    public ResponseEntity<Boolean> update(@Valid @RequestBody ProfileUpdatePhotoDTO dto) {
+        return ResponseEntity.ok(profileService.updatePhoto(dto));
     }
 
     @PreAuthorize("hasRole('ADMIN')")

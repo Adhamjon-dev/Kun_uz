@@ -15,17 +15,17 @@ public class ArticleLikeController {
     @Autowired
     private ArticleLikeService articleLikeService;
 
-    @PostMapping("like/{articleId}")
+    @PostMapping("/like/{articleId}")
     public ResponseEntity<ArticleLikeDTO> like(@PathVariable("articleId") String articleId) {
         return ResponseEntity.ok(articleLikeService.create(articleId, LIKE));
     }
 
-    @PostMapping("dislike/{articleId}")
+    @PostMapping("/dislike/{articleId}")
     public ResponseEntity<ArticleLikeDTO> dislike(@PathVariable("articleId") String articleId) {
         return ResponseEntity.ok(articleLikeService.create(articleId, DISLIKE));
     }
 
-    @DeleteMapping("delete/{articleId}")
+    @DeleteMapping("/delete/{articleId}")
     public ResponseEntity<Boolean> delete(@PathVariable("articleId") String articleId) {
         return ResponseEntity.ok(articleLikeService.remove(articleId));
     }

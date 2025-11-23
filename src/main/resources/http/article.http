@@ -1,13 +1,13 @@
 ### Create article
 POST localhost:8080/api/v1/article
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjpbIlJPTEVfVVNFUiIsIlJPTEVfTU9ERVJBVE9SIl0sInN1YiI6ImFkaGFtam9ueWF4c2hpYm92QGdtYWlsLmNvbSIsImlhdCI6MTc2MzA1MTU5MywiZXhwIjoxNzYzMTM3OTkzfQ.EepbcIwAJSCO8T8EpB8J3V2jUJkNiPUA88jTnbFU8LT_BMqHeig0bM7K9QDa1YD3gqYP5CNllnkAd7C4UDX16w
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjpbIlJPTEVfVVNFUiIsIlJPTEVfQURNSU4iXSwic3ViIjoiYWRoYW1qb255YXhzaGlib3lldkBnbWFpbC5jb20iLCJpYXQiOjE3NjM4ODI1NjIsImV4cCI6MTc2Mzk2ODk2Mn0.tfeBqRIvVcTe2-GP6WQGz6y_g_5vdr_Ak6GaV-Da09JJcToibS66wwLFllJ29VQzBsd-EBfGx48b_jGavX6o8A
 
 {
-  "title": "aaa5",
+  "title": "aaa6",
   "content": "aaaa5",
   "description": "aaaa5",
-  "imageId": "1",
+  "imageId": "49008308-8024-4982-99a0-d5a0312fb500.png",
   "readTime": 4,
   "regionId": 2,
   "categoryList": [
