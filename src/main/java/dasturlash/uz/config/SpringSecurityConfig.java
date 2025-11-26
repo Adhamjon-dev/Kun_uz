@@ -39,6 +39,7 @@ public class SpringSecurityConfig {
             "/api/v1/article/tagName/*",
             "/api/v1/article/user/filter",
             "/api/v1/attach/**",
+            "/api/v1/currency/**"
     };
 
     @Bean

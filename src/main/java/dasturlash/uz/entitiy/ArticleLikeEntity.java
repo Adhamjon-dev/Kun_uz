@@ -32,5 +32,6 @@ public class ArticleLikeEntity {
     private LocalDateTime createdDate;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "emotion")
     private EmotionEnum emotion;
 }

@@ -1,0 +1,5 @@
+### GET By ccy
+GET localhost:8080/api/v1/currency/get/USD
+
+### Get All
+GET localhost:8080/api/v1/currency/all

@@ -51,6 +51,8 @@ public class ArticleService {
         entity.setVisible(true);
         entity.setViewCount(0);
         entity.setSharedCount(0L);
+        entity.setLikeCount(0);
+        entity.setDislikeCount(0);
         entity.setModeratorId(SpringSecurityUtil.getCurrentUserId());
         // save
         articleRepository.save(entity);
