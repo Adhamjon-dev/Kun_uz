@@ -154,14 +154,8 @@ public interface ArticleRepository extends CrudRepository<ArticleEntity, String>
             join tags t on t.id = a_t.tag_id
             where a_t.article_id = a.id
         ) as tags,
-        (
-            select count(a_l) from article_like a_l
-            where a_l.article_id = a.id and a_l.emotion = 'LIKE'
-        ) as likeCount,
-        (
-            select count(a_l) from article_like a_l
-            where a_l.article_id = a.id and a_l.emotion = 'DISLIKE'
-        ) as dislikeCount
+        a.like_count as likeCount,
+        a.dislike_count as dislikeCount
     from article a
     join region r on r.id = a.region_id
     join profile p on p.id = a.moderator_id

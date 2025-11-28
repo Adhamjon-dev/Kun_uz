@@ -39,6 +39,8 @@ public class CommentService {
         entity.setArticleId(createDTO.getArticleId());
         entity.setCreatedDate(LocalDateTime.now());
         entity.setProfileId(SpringSecurityUtil.getCurrentUserId());
+        entity.setLikeCount(0L);
+        entity.setDislikeCount(0L);
         if (createDTO.getReplyId() != null) {
             entity.setReplyId(createDTO.getReplyId());
         }

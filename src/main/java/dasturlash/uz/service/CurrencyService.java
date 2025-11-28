@@ -3,8 +3,8 @@ package dasturlash.uz.service;
 import dasturlash.uz.dto.CurrencyDTO;
 import dasturlash.uz.exp.AppBadException;
 import jakarta.annotation.PostConstruct;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+@Slf4j
 @Service
 public class CurrencyService {
     @Autowired
@@ -33,9 +34,11 @@ public class CurrencyService {
             CurrencyDTO[] response = restTemplate.getForObject(url, CurrencyDTO[].class);
 
             if (response != null) {
+                log.info("refresh currency response");
                 saveAll(List.of(response));
             }
         } catch (HttpClientErrorException.NotFound e) {
+            log.warn("Not fount url:  {}", url);
             throw new AppBadException(e.getMessage());
         }
     }

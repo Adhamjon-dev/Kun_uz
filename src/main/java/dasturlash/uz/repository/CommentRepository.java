@@ -23,16 +23,8 @@ public interface CommentRepository extends CrudRepository<CommentEntity,Integer>
                c.profileId as profileId,
                p.name as profileName,
                p.photoId as profileImageId,
-               (
-                    select count(cl)
-                    from CommentLikeEntity cl
-                    where cl.commentId = c.id and cl.emotion = dasturlash.uz.enums.EmotionEnum.LIKE
-               ) as likeCount,
-               (
-                    select count(cl)
-                    from CommentLikeEntity cl
-                    where cl.commentId = c.id and cl.emotion = dasturlash.uz.enums.EmotionEnum.DISLIKE
-               ) as dislikeCount
+               c.likeCount as likeCount,
+               c.dislikeCount as dislikeCount
         from CommentEntity c
         join ProfileEntity p on p.id = c.profileId
         where c.articleId = :articleId and c.visible = true

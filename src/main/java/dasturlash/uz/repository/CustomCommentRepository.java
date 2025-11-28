@@ -45,14 +45,7 @@ public class CustomCommentRepository {
         }
         StringBuilder selectBuilder = new StringBuilder("Select c.id, c.createdDate, c.updateDate, c.content, p.id, p.name, " +
                 "p.surname, a.id, a.title, c.replyId, c.visible, " +
-                "(select count(cl) " +
-                "from CommentLikeEntity cl " +
-                "where cl.commentId = c.id and cl.emotion = 'LIKE' " +
-                "), " +
-                "(select count(cl) " +
-                "from CommentLikeEntity cl " +
-                "where cl.commentId = c.id and cl.emotion = 'DISLIKE' " +
-                ") " +
+                "c.likeCount, c.dislikeCount " +
                 "From CommentEntity c " +
                 "inner join ProfileEntity p on p.id =c.profileId " +
                 "inner join ArticleEntity a on c.articleId = a.id ");

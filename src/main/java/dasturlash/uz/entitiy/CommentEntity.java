@@ -47,8 +47,8 @@ public class CommentEntity {
     private Boolean visible = Boolean.TRUE;
 
     @Column(name = "like_count")
-    private Integer likeCount = 0;
+    private Long likeCount;
 
     @Column(name = "dislike_count")
-    private Integer dislikeCount = 0;
+    private Long dislikeCount;
 }

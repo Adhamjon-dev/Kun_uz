@@ -4,6 +4,7 @@ import dasturlash.uz.dto.article.*;
 import dasturlash.uz.enums.AppLanguageEnum;
 import dasturlash.uz.service.ArticleService;
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/v1/article")
 public class ArticleController {
@@ -21,6 +23,7 @@ public class ArticleController {
     @PreAuthorize("hasRole('MODERATOR')")
     @PostMapping({"", "/"})
     public ResponseEntity<ArticleDTO> create(@RequestBody @Valid ArticleCreateDTO dto) {
+        log.info("REST request to save Article : {}", dto);
         return ResponseEntity.ok(articleService.create(dto));
     }
 
@@ -28,12 +31,14 @@ public class ArticleController {
     @PutMapping("/{id}")
     public ResponseEntity<ArticleDTO> update(@PathVariable String id,
                                              @Valid @RequestBody ArticleCreateDTO dto) {
+        log.info("REST request to update Article : {}", dto);
         return ResponseEntity.ok(articleService.update(id, dto));
     }
 
     @PreAuthorize("hasAnyRole('MODERATOR', 'ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<String> delete(@PathVariable String id) {
+        log.info("REST request to delete Article : {}", id);
         return ResponseEntity.ok(articleService.delete(id));
     }
 

@@ -3,9 +3,9 @@ POST localhost:8080/api/v1/auth/registration
 Content-Type: application/json
 
 {
-  "name": "Erali",
-  "surname": "MURODULLAYEV",
-  "username": "+998930544807",
+  "name": "Asliddin",
+  "surname": "Salomov",
+  "username": "+998938911577",
   "password": "12345"
 }
 
@@ -25,7 +25,7 @@ PUT localhost:8080/api/v1/auth/registration/sms/verification
 Content-Type: application/json
 
 {
-  "phoneNumber": "998904917705",
+  "phoneNumber": "998938911577",
   "code": "54306"
 }
 ###
@@ -33,6 +33,6 @@ POST http://localhost:8080/api/v1/auth/login
 Content-Type: application/json
 
 {
-  "username": "false",
+  "username": "adhamjonyaxshibov@gmail.com",
   "password": "12345"
 }
